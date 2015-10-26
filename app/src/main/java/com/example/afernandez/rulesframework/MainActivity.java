@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.AdapterView;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         //WebView
         mWebView = (WebView) findViewById(R.id.eyeWeb);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.setWebChromeClient(new MyWebChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
         mWebView.loadUrl("file:///android_asset/browser/demo/demo.html");
@@ -230,5 +233,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private final class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            Log.d("LogTag", message);
+            result.confirm();
+            return true;
+        }
     }
 }
