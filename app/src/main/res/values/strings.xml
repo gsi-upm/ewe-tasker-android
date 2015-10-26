@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">RulesFramework</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="if_elements">
+        <item>Bluetooth</item>
+    </string-array>
+    <string-array name="bluetooth_actions">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+
+    <string-array name="do_elements">
+        <item>Notificacion</item>
+    </string-array>
+    <string-array name="notif_action">
+        <item>SHOW</item>
+    </string-array>
+
+    <string-array name="default_empty">
+
+    </string-array>
+</resources>
