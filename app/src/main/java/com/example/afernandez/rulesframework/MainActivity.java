@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     EditText ruleName;
     Button crearRegla;
-    WebView mWebView;
+    static WebView mWebView;
     ArrayAdapter<String> adapter;
-    JavaScriptInterface JSInterface;
+    static JavaScriptInterface JSInterface;
+    EditRulesFunctions eyeHandler;
     //Receivers
     BluetoothReceiver mBluetoothReceiver= new BluetoothReceiver();
     WifiReceiver mWifiReceiver = new WifiReceiver();
@@ -103,8 +104,11 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
         JSInterface = new JavaScriptInterface(getApplicationContext());
-        mWebView.addJavascriptInterface(JSInterface, "JSInterface");
+        mWebView.addJavascriptInterface(this, "JSInterface");
         mWebView.loadUrl("file:///sdcard/EYEClient/browser/demo/demo.html");
+
+        //EYE
+        eyeHandler = new EditRulesFunctions(getApplicationContext());
 
     }
 
@@ -165,26 +169,22 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout ruleLayout = (LinearLayout) findViewById(R.id.ruleList);
         ruleLayout.addView(rule);
 
-        Constants.ACTIVE_RULES_LIST.add(new Rule(ruleName.getText().toString(),ifElementSelected, ifActionSelected, doElementSelected, doActionSelected));
+        Constants.ACTIVE_RULES_LIST.add(new Rule(ruleName.getText().toString(), ifElementSelected, ifActionSelected, doElementSelected, doActionSelected));
         if(!Constants.activeReceiversList.contains(ifElementSelected)){
             Constants.activeReceiversList.add(ifElementSelected);
         }
         //initializeReceiver for the new rule
         startReceiver(ifElementSelected);
         //Crear regla en rules.n3
-        editEYERulesFile();
-
+        eyeHandler.addRuleToN3(ruleName.getText().toString(),ifElementSelected,ifActionSelected,doElementSelected,doActionSelected);
     }
     public void deleteRules(View v){
         Constants.ACTIVE_RULES_LIST = new ArrayList<>();
         Constants.saveArrayPref(getApplicationContext(),"ACTIVE_RULES_LIST",Constants.ACTIVE_RULES_LIST);
+        //Borrar reglas en rules.n3
         recreate();
     }
 
-    public boolean editEYERulesFile(){
-
-        return true;
-    }
     /**RECEIVERS**/
     public void startReceiver(String nameReceiver){
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -268,9 +268,13 @@ public class MainActivity extends AppCompatActivity {
             //view.loadUrl("javascript:(function(){document.getElementById('run').click();})()");
         }
     }
+    @JavascriptInterface
+    public void showResult(String result){
+        Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+    }
     public class JavaScriptInterface{
         Context mContext;
-
+        String result;
         /** Instantiate the interface and set the context */
         JavaScriptInterface(Context c) {
             mContext = c;
@@ -278,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void showResult(String result){
             //Toast.makeText(mContext,result,Toast.LENGTH_LONG).show();
+            this.result = result;
         }
     }
 }
