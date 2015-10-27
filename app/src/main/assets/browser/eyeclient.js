@@ -15,7 +15,7 @@
       var $inputList = $('<ul>').append($('<li class="label">').text(labels.input));
       var $inputContainer = $('<div>').addClass('data');
       // create query button and status label
-      var $submit = $('<button>');
+      var $submit = $('<button id="run">');
       var $status = $('<span>');
       // create list and container for result tabs
       var $resultList = $('<ul>').append($('<li class="label">').text(labels.results));
@@ -74,6 +74,7 @@
                               .tabs()
                               .tabs('select', resultCount - 1)
                               .slideDown();
+              executeResultAndroid(n3)
             })
             // EYE failure?
             .fail(function (reason) {

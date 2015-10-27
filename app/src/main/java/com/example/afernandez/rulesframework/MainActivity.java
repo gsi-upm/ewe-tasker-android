@@ -5,7 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,9 +28,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     Button crearRegla;
     WebView mWebView;
     ArrayAdapter<String> adapter;
-
+    JavaScriptInterface JSInterface;
     //Receivers
     BluetoothReceiver mBluetoothReceiver= new BluetoothReceiver();
     WifiReceiver mWifiReceiver = new WifiReceiver();
@@ -65,26 +72,43 @@ public class MainActivity extends AppCompatActivity {
         ifElement.setOnItemSelectedListener(new refreshSpinnerListener());
         doElement.setOnItemSelectedListener(new refreshSpinnerListener());
 
+        //Check first time
+        SharedPreferences settings = getSharedPreferences("my_preferences", 0);
+        boolean setupDone = settings.getBoolean("setup_done", false);
+
+        if (!setupDone) {
+            //Assets to files (EYE Client)
+            AssetsToFileManager mAtFM = new AssetsToFileManager(this);
+            try{
+                mAtFM.copyFilesToSdCard();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("setup_done", true);
+            editor.commit();
+        }
+
         //Load cache rules from previous sessions
         Constants.ACTIVE_RULES_LIST = (ArrayList<Rule>) Constants.getArrayPref(getApplicationContext(),"ACTIVE_RULES_LIST");
 
         if(Constants.ACTIVE_RULES_LIST.size() > 0){
             fillRules(Constants.ACTIVE_RULES_LIST);
         }
-        //Register all active receiver list
-        /**for (int i = 0; i<Constants.activeReceiversList.size(); i++){
-            startReceiver(Constants.activeReceiversList.get(i));
-        }**/
 
         //WebView
         mWebView = (WebView) findViewById(R.id.eyeWeb);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebChromeClient(new MyWebChromeClient());
+        mWebView.setWebViewClient(new MyWebViewClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        mWebView.loadUrl("file:///android_asset/browser/demo/demo.html");
+        JSInterface = new JavaScriptInterface(getApplicationContext());
+        mWebView.addJavascriptInterface(JSInterface, "JSInterface");
+        mWebView.loadUrl("file:///sdcard/EYEClient/browser/demo/demo.html");
 
     }
+
+    /**SPINNERS**/
     public void fillSpinners(){
         //IF
         if(ifElement.getSelectedItem().toString().equals("Bluetooth")){
@@ -111,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
             doAction.setAdapter(adapter);
         }
     }
+
+    /**RULES**/
     public void fillRules(ArrayList<Rule> rules){
         for (int i = 0; i<rules.size();i++){
             TextView rule = new TextView(this);
@@ -145,13 +171,21 @@ public class MainActivity extends AppCompatActivity {
         }
         //initializeReceiver for the new rule
         startReceiver(ifElementSelected);
-        //Save rule in EYE
+        //Crear regla en rules.n3
+        editEYERulesFile();
+
     }
     public void deleteRules(View v){
         Constants.ACTIVE_RULES_LIST = new ArrayList<>();
         Constants.saveArrayPref(getApplicationContext(),"ACTIVE_RULES_LIST",Constants.ACTIVE_RULES_LIST);
         recreate();
     }
+
+    public boolean editEYERulesFile(){
+
+        return true;
+    }
+    /**RECEIVERS**/
     public void startReceiver(String nameReceiver){
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         switch (nameReceiver){
@@ -225,22 +259,25 @@ public class MainActivity extends AppCompatActivity {
         Constants.saveArrayPref(getApplicationContext(),"ACTIVE_RULES_LIST",Constants.ACTIVE_RULES_LIST);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    private final class MyWebChromeClient extends WebChromeClient {
+    private final class MyWebViewClient extends WebViewClient {
         @Override
-        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            Log.d("LogTag", message);
-            result.confirm();
-            return true;
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            Log.i("TAG","onPageFinished");
+            //Ejecuta EYE
+            //view.loadUrl("javascript:(function(){document.getElementById('run').click();})()");
+        }
+    }
+    public class JavaScriptInterface{
+        Context mContext;
+
+        /** Instantiate the interface and set the context */
+        JavaScriptInterface(Context c) {
+            mContext = c;
+        }
+        @JavascriptInterface
+        public void showResult(String result){
+            //Toast.makeText(mContext,result,Toast.LENGTH_LONG).show();
         }
     }
 }

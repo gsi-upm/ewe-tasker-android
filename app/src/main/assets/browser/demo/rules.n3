@@ -3,3 +3,5 @@
 { ?a :knows ?b }
 =>
 { ?b :knows ?a }.
+
+#NextRuleBelow
