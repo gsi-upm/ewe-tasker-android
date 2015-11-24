@@ -13,7 +13,7 @@
     </string-array>
 
     <string-array name="do_elements">
-        <item>Notificacion</item>
+        <item>Toast</item>
     </string-array>
     <string-array name="notif_action">
         <item>SHOW</item>

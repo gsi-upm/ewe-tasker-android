@@ -1,22 +1,19 @@
-package com.example.afernandez.rulesframework;
+package es.dit.gsi.rulesframework;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -28,15 +25,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import es.dit.gsi.rulesframework.framework.Module;
+import es.dit.gsi.rulesframework.triggers.WifiTrigger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     //Receivers
     BluetoothReceiver mBluetoothReceiver= new BluetoothReceiver();
     WifiReceiver mWifiReceiver = new WifiReceiver();
+    static boolean hasToExecute =false;
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,20 +68,12 @@ public class MainActivity extends AppCompatActivity {
         doElement.setOnItemSelectedListener(new refreshSpinnerListener());
 
         //Check first time
-        SharedPreferences settings = getSharedPreferences("my_preferences", 0);
+        settings = getSharedPreferences("my_preferences", 0);
         boolean setupDone = settings.getBoolean("setup_done", false);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         if (!setupDone) {
             //Assets to files (EYE Client)
-            AssetsToFileManager mAtFM = new AssetsToFileManager(this);
-            try{
-                mAtFM.copyFilesToSdCard();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("setup_done", true);
-            editor.commit();
+            setUpFiles();
         }
 
         //Load cache rules from previous sessions
@@ -104,14 +90,25 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
         JSInterface = new JavaScriptInterface(getApplicationContext());
-        mWebView.addJavascriptInterface(this, "JSInterface");
+        mWebView.addJavascriptInterface(new JavaScriptInterface(this), "JSInterface");
         mWebView.loadUrl("file:///sdcard/EYEClient/browser/demo/demo.html");
 
         //EYE
         eyeHandler = new EditRulesFunctions(getApplicationContext());
 
     }
-
+    public void setUpFiles(){
+        //Assets to files (EYE Client)
+        AssetsToFileManager mAtFM = new AssetsToFileManager(this);
+        try{
+            mAtFM.copyFilesToSdCard();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("setup_done", true);
+        editor.commit();
+    }
     /**SPINNERS**/
     public void fillSpinners(){
         //IF
@@ -127,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             ifAction.setAdapter(adapter);
         }
         //DO
-        if(doElement.getSelectedItem().toString().equals("Notificacion")){
+        if(doElement.getSelectedItem().toString().equals("Toast")){
             String array [] = getResources().getStringArray(R.array.notif_action);
             adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_item, array);
@@ -176,12 +173,14 @@ public class MainActivity extends AppCompatActivity {
         //initializeReceiver for the new rule
         startReceiver(ifElementSelected);
         //Crear regla en rules.n3
-        eyeHandler.addRuleToN3(ruleName.getText().toString(),ifElementSelected,ifActionSelected,doElementSelected,doActionSelected);
+        eyeHandler.addRuleToN3(ruleName.getText().toString(), ifElementSelected, ifActionSelected, doElementSelected, doActionSelected);
+        mWebView.reload();
     }
     public void deleteRules(View v){
         Constants.ACTIVE_RULES_LIST = new ArrayList<>();
         Constants.saveArrayPref(getApplicationContext(),"ACTIVE_RULES_LIST",Constants.ACTIVE_RULES_LIST);
         //Borrar reglas en rules.n3
+        setUpFiles();
         recreate();
     }
 
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         switch (nameReceiver){
             case "Bluetooth":
-                Log.i("RULESFW","Bluetooth receiver registered");
+                Log.i("RULESFW", "Bluetooth receiver registered");
                 registerReceiver(mBluetoothReceiver, filter);
                 Constants.activeReceiversList.add("Bluetooth");
                 break;
@@ -204,9 +203,9 @@ public class MainActivity extends AppCompatActivity {
     public void stopReceiver(String nameReceiver){
         switch (nameReceiver){
             case "Bluetooth":
-                unregisterReceiver(mBluetoothReceiver);break;
+                //unregisterReceiver(mBluetoothReceiver);break;
             case "Wifi":
-                unregisterReceiver(mWifiReceiver);break;
+                //unregisterReceiver(mWifiReceiver);break;
         }
     }
 
@@ -227,6 +226,11 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.second){
+            Intent i = new Intent(this, SecondActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Constants.saveArrayPref(getApplicationContext(),"ACTIVE_RULES_LIST",Constants.ACTIVE_RULES_LIST);
+        Constants.saveArrayPref(getApplicationContext(), "ACTIVE_RULES_LIST", Constants.ACTIVE_RULES_LIST);
     }
 
     private final class MyWebViewClient extends WebViewClient {
@@ -265,13 +269,10 @@ public class MainActivity extends AppCompatActivity {
             super.onPageFinished(view, url);
             Log.i("TAG","onPageFinished");
             //Ejecuta EYE
-            //view.loadUrl("javascript:(function(){document.getElementById('run').click();})()");
+            eyeHandler.pageFinishReloading(hasToExecute);
         }
     }
-    @JavascriptInterface
-    public void showResult(String result){
-        Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
-    }
+
     public class JavaScriptInterface{
         Context mContext;
         String result;
@@ -279,10 +280,14 @@ public class MainActivity extends AppCompatActivity {
         JavaScriptInterface(Context c) {
             mContext = c;
         }
+
         @JavascriptInterface
         public void showResult(String result){
-            //Toast.makeText(mContext,result,Toast.LENGTH_LONG).show();
-            this.result = result;
+            String doQuote = EditRulesFunctions.getDoFromResult(result);
+            Log.i("EXECUTE EYE","Show Result: " + doQuote);
+            //Toast.makeText(getApplicationContext(),doQuote,Toast.LENGTH_LONG).show();
+            //Handle result string from EYE
+            eyeHandler.executeDoResponse(doQuote);
         }
     }
 }

@@ -1,7 +1,4 @@
-package com.example.afernandez.rulesframework;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package es.dit.gsi.rulesframework;
 
 /**
  * Created by afernandez on 23/10/15.

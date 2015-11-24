@@ -1,4 +1,4 @@
-package com.example.afernandez.rulesframework;
+package es.dit.gsi.rulesframework;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

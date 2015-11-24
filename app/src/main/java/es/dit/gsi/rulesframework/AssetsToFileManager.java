@@ -1,10 +1,8 @@
-package com.example.afernandez.rulesframework;
+package es.dit.gsi.rulesframework;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;

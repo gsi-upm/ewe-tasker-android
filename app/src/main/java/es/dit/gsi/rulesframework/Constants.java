@@ -1,4 +1,4 @@
-package com.example.afernandez.rulesframework;
+package es.dit.gsi.rulesframework;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,22 +8,8 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by afernandez on 23/10/15.
@@ -34,6 +20,7 @@ public class Constants {
     //List active receivers on rules
     public static ArrayList<String> activeReceiversList = new ArrayList<>();
     public static ArrayList<Rule> ACTIVE_RULES_LIST = new ArrayList<>();
+    public static String lastInputSent = "";
 
     public static void savePreferences(Activity activity, String key, String value){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
