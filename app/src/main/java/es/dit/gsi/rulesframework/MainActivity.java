@@ -23,12 +23,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import es.dit.gsi.rulesframework.framework.Module;
-import es.dit.gsi.rulesframework.triggers.WifiTrigger;
+import es.dit.gsi.rulesframework.receivers.BluetoothReceiver;
+import es.dit.gsi.rulesframework.receivers.WifiReceiver;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package es.dit.gsi.rulesframework;
+package es.dit.gsi.rulesframework.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

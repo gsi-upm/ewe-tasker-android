@@ -19,7 +19,7 @@ public class EditRulesFunctions {
     final static String TARGET_BASE_PATH = "/sdcard/EYEClient/";
 
 
-    EditRulesFunctions(Context context){
+    public EditRulesFunctions(Context context){
         this.context=context;
     }
 

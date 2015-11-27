@@ -58,4 +58,7 @@ public class Rule{
         this.doAction = doAction;
         this.doElement = doElement;
     }
+    public String getFullRule(){
+        return "IF " + ifElement + " " + ifAction + " -> DO " + doElement + " " + doAction + "\n";
+    }
 }
