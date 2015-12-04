@@ -1,0 +1,164 @@
+{
+  "ifElements": {
+    "1":{
+      "Name":"Bluetooth",
+      "Type":"Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"ON",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"OFF",
+          "Type":"boolean"          
+        }
+      }
+    },
+    "2":{
+      "Name": "Wifi",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"ON",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"OFF",
+          "Type":"boolean"          
+        }
+      }
+    },
+    "3":{
+      "Name": "Red de Datos",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"ON",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"OFF",
+          "Type":"boolean"          
+        }
+      }
+    },
+    "4":{
+      "Name": "Screen",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"ON",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"OFF",
+          "Type":"boolean"          
+        }
+      }
+    },
+    "5":{
+      "Name": "Battery",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"Connected",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"Disconnected",
+          "Type":"boolean"          
+        },
+        "3":{
+          "Name":"Level",
+          "Type":"Integer"
+        }
+      }      
+    },
+    "6":{
+      "Name": "GPS",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"ON",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"OFF",
+          "Type":"boolean"          
+        },
+        "3":{
+          "Name":"Speed",
+          "Type":"Integer"
+        }
+      }
+    },
+    "7":{
+      "Name": "Time",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"SetTime",
+          "Type":"String"
+        },
+        "2":{
+          "Name":"CountDown",
+          "Type":"Integer"          
+        }
+      }
+    },
+    "8":{
+      "Name": "Silent mode",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"ON",
+          "Type":"boolean"
+        },
+        "2":{
+          "Name":"OFF",
+          "Type":"boolean"          
+        }
+      }
+    },
+    "9":{
+      "Name": "SMS",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "Name":"Received",
+          "Type":"boolean"
+        }
+      }
+    }
+  },
+  "doElements":{
+    "1":{
+      "Name":"Notification",
+      "Type":"Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "Toast":"String",
+        "State":"String"
+      }      
+    }
+  }
+}
