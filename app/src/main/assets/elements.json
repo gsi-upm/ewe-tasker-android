@@ -7,12 +7,16 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"ON",
-          "Type":"boolean"
+          "name":"ON",
+          "type":"boolean"
         },
         "2":{
-          "Name":"OFF",
-          "Type":"boolean"          
+          "name":"OFF",
+          "type":"boolean"
+        },
+        "3":{
+          "name":"Device Found",
+          "type":"String"
         }
       }
     },
@@ -23,12 +27,12 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"ON",
-          "Type":"boolean"
+          "name":"ON",
+          "type":"boolean"
         },
         "2":{
-          "Name":"OFF",
-          "Type":"boolean"          
+          "name":"OFF",
+          "type":"boolean"
         }
       }
     },
@@ -39,12 +43,12 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"ON",
-          "Type":"boolean"
+          "name":"ON",
+          "type":"boolean"
         },
         "2":{
-          "Name":"OFF",
-          "Type":"boolean"          
+          "name":"OFF",
+          "type":"boolean"
         }
       }
     },
@@ -55,12 +59,12 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"ON",
-          "Type":"boolean"
+          "name":"ON",
+          "type":"boolean"
         },
         "2":{
-          "Name":"OFF",
-          "Type":"boolean"          
+          "name":"OFF",
+          "type":"boolean"
         }
       }
     },
@@ -71,18 +75,18 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"Connected",
-          "Type":"boolean"
+          "name":"Connected",
+          "type":"boolean"
         },
         "2":{
-          "Name":"Disconnected",
-          "Type":"boolean"          
+          "name":"Disconnected",
+          "type":"boolean"
         },
         "3":{
-          "Name":"Level",
-          "Type":"Integer"
+          "name":"Level",
+          "type":"Integer"
         }
-      }      
+      }
     },
     "6":{
       "Name": "GPS",
@@ -91,16 +95,16 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"ON",
-          "Type":"boolean"
+          "name":"ON",
+          "type":"boolean"
         },
         "2":{
-          "Name":"OFF",
-          "Type":"boolean"          
+          "name":"OFF",
+          "type":"boolean"
         },
         "3":{
-          "Name":"Speed",
-          "Type":"Integer"
+          "name":"Speed",
+          "type":"Integer"
         }
       }
     },
@@ -111,12 +115,12 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"SetTime",
-          "Type":"String"
+          "name":"Set Time",
+          "type":"String"
         },
         "2":{
-          "Name":"CountDown",
-          "Type":"Integer"          
+          "name":"Seconds Count Down",
+          "type":"Integer"
         }
       }
     },
@@ -127,12 +131,12 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"ON",
-          "Type":"boolean"
+          "name":"ON",
+          "type":"boolean"
         },
         "2":{
-          "Name":"OFF",
-          "Type":"boolean"          
+          "name":"OFF",
+          "type":"boolean"
         }
       }
     },
@@ -143,8 +147,8 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "Name":"Received",
-          "Type":"boolean"
+          "name":"Received",
+          "type":"Integer"
         }
       }
     }
@@ -156,9 +160,15 @@
       "ResourceId":"",
       "ReceiverName":"",
       "Actions":{
-        "Toast":"String",
-        "State":"String"
-      }      
+        "1":{
+          "name":"Toast",
+          "type":"String"
+        },
+        "2":{
+          "name":"State",
+          "type":"String"
+        }
+      }
     }
   }
 }

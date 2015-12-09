@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +60,21 @@ public class IfElementsFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         context = rootView.getContext();
-        addIfElementsToLayout(rootView);
+        if(items.size()>0){
+            items.clear();
+            addIfElementsToLayout();
+        }else{
+            addIfElementsToLayout();
+        }
         return rootView;
     }
 
-    public void addIfElementsToLayout(View v){
+    public void addIfElementsToLayout(){
         for(IfElement iE : SecondActivity.ifElementsList){
             items.add(iE);
+            Log.i("ADD ITEMS: ", iE.getName());
+            Log.i("ADD ITEMS: ",iE.getActions().get(0).getName());
+
         }
         mAdapter = new MyRecyclerViewAdapter(context,items,getParentFragment());
         mRecyclerView.setAdapter(mAdapter);    }

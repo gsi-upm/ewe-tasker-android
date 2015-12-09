@@ -61,10 +61,14 @@ public class SecondActivity extends AppCompatActivity {
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new OnFloatingButtonClickListener());
 
-        json = loadJSONFromAsset("elements.json");
-        JSONParse(json);
+        if(ifElementsList.size()>0) {
+            ifElementsList.clear();
+        }else {
+            json = loadJSONFromAsset("elements.json");
+            JSONParse(json);
+            addItems();
+        }
 
-        addItems();
     }
 
     @Override
@@ -114,13 +118,15 @@ public class SecondActivity extends AppCompatActivity {
 
     //Read JSON
     public void JSONParse(String json){
+
         try{
             JSONObject jsonObject = new JSONObject(json);
             JSONObject ifElements = jsonObject.getJSONObject("ifElements");
 
             Iterator iterIdIfElement = ifElements.keys();
             while (iterIdIfElement.hasNext()){
-                JSONObject element = ifElements.getJSONObject(String.valueOf(iterIdIfElement.next()));
+                String idElement= String.valueOf(iterIdIfElement.next());
+                JSONObject element = ifElements.getJSONObject(idElement);
 
                 IfElement ifElement= new IfElement();
                 ifElement.setName(element.getString("Name"));
@@ -134,15 +140,15 @@ public class SecondActivity extends AppCompatActivity {
                 while(iterIDIfAction.hasNext()){
                     IfAction action = new IfAction();
                     String id = (String) iterIDIfAction.next();
-                    action.setName(ifActions.getJSONObject(id).getString("Name"));
-                    action.setParamType(ifActions.getJSONObject(id).getString("Type"));
+                    action.setName(ifActions.getJSONObject(id).getString("name"));
+                    action.setParamType(ifActions.getJSONObject(id).getString("type"));
                     actions.add(action);
+                    Log.i("JSONPARSER", action.getName());
+                    Log.i("JSONPARSER", action.getParamType());
                 }
                 ifElement.setActions(actions);
                 ifElementsList.add(ifElement);
             }
-            JSONObject element = ifElements.getJSONObject("1");
-            Log.i("JSONPARSER", element.getString("Name"));
         }catch (Exception e){
             e.printStackTrace();
         }

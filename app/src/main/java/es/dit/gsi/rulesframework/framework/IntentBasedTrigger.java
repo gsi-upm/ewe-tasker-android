@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-import com.atooma.plugin.IIntentBasedTriggerPlugin;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import es.dit.gsi.rulesframework.services.LocalService;
+import es.dit.gsi.rulesframework.services.EYEService;
 import es.dit.gsi.rulesframework.util.ParameterBundle;
 import es.dit.gsi.rulesframework.util.Values;
 
@@ -21,7 +19,7 @@ import es.dit.gsi.rulesframework.util.Values;
  * Created by afernandez on 24/11/15.
  */
 public abstract class IntentBasedTrigger extends Binder {
-    public LocalService mService;
+    public EYEService mService;
     protected boolean bound;
     private Context context;
     private int normalIcon;
@@ -36,7 +34,7 @@ public abstract class IntentBasedTrigger extends Binder {
     private List<Integer> parameterNullLabels = new ArrayList();
     public ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            LocalService.LocalBinder binder = (LocalService.LocalBinder)(service);
+            EYEService.LocalBinder binder = (EYEService.LocalBinder)(service);
             mService = binder.getService();
             IntentBasedTrigger.this.bound = true;
         }
