@@ -30,7 +30,6 @@ public class IfElementsFragment extends Fragment {
 
     List<Object> items = new ArrayList<>();
 
-    Button bluetoothBut;
     Context context;
 
     private RecyclerView mRecyclerView;
@@ -77,5 +76,6 @@ public class IfElementsFragment extends Fragment {
 
         }
         mAdapter = new MyRecyclerViewAdapter(context,items,getParentFragment());
-        mRecyclerView.setAdapter(mAdapter);    }
+        mRecyclerView.setAdapter(mAdapter);
+    }
 }

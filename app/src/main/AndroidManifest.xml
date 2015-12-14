@@ -43,6 +43,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewRuleActivity"></activity>
+        <service android:name=".services.EYEService" android:enabled="true"/>
     </application>
 
 </manifest>

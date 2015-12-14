@@ -1,6 +1,12 @@
 package es.dit.gsi.rulesframework;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
@@ -24,6 +30,7 @@ import es.dit.gsi.rulesframework.fragments.DoFragment;
 import es.dit.gsi.rulesframework.fragments.IfContainerFragment;
 import es.dit.gsi.rulesframework.model.IfAction;
 import es.dit.gsi.rulesframework.model.IfElement;
+import es.dit.gsi.rulesframework.services.EYEService;
 
 /**
  * Created by afernandez on 27/11/15.
@@ -34,18 +41,42 @@ public class NewRuleActivity extends FragmentActivity{
     FragmentPagerAdapter adapterViewPager;
     public static FragmentTabHost tabHost;
 
+    public static EYEService mService;
+    boolean isBound = false;
+
+    private ServiceConnection myConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            EYEService.LocalBinder binder = (EYEService.LocalBinder) service;
+            mService = binder.getService();
+            isBound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_rule);
 
-        tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        //Service
+        Log.i("EYEService", "Service Connected");
+        Intent intent = new Intent(this, EYEService.class);
+        bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
 
+        //Tabhost
+        tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
         tabHost.addTab(tabHost.newTabSpec("if_fragment").setIndicator("IF"), IfContainerFragment.class, null); //Añado las pestañas
         tabHost.addTab(tabHost.newTabSpec("do_fragment").setIndicator("DO"), DoContainerFragment.class, null);
         //Hago que no sea clickable para que no cargue un navegador vacio
         tabHost.getTabWidget().getChildTabViewAt(ID_FRAGMENT_DO).setEnabled(false);
+
     }
 
     @Override
@@ -65,5 +96,10 @@ public class NewRuleActivity extends FragmentActivity{
         if (!isPopFragment) {
             finish();
         }
+    }
+
+    public void initEYEService(){
+
+
     }
 }

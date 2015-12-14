@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
+import es.dit.gsi.rulesframework.model.DoAction;
+import es.dit.gsi.rulesframework.model.DoElement;
 import es.dit.gsi.rulesframework.model.IfAction;
 import es.dit.gsi.rulesframework.model.IfElement;
 
@@ -46,6 +48,7 @@ public class SecondActivity extends AppCompatActivity {
 
     public String json;
     public  static List<IfElement> ifElementsList = new ArrayList();
+    public  static List<DoElement> doElementsList = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +124,8 @@ public class SecondActivity extends AppCompatActivity {
 
         try{
             JSONObject jsonObject = new JSONObject(json);
+
+            //IF
             JSONObject ifElements = jsonObject.getJSONObject("ifElements");
 
             Iterator iterIdIfElement = ifElements.keys();
@@ -148,6 +153,35 @@ public class SecondActivity extends AppCompatActivity {
                 }
                 ifElement.setActions(actions);
                 ifElementsList.add(ifElement);
+            }
+
+            //DO
+            JSONObject doElements = jsonObject.getJSONObject("doElements");
+            Iterator iterIdDoElement = ifElements.keys();
+            while (iterIdDoElement.hasNext()){
+                String idElement= String.valueOf(iterIdDoElement.next());
+                JSONObject element = doElements.getJSONObject(idElement);
+
+                DoElement doElement= new DoElement();
+                doElement.setName(element.getString("Name"));
+                doElement.setType(element.getString("Type"));
+                doElement.setResourceName(element.getString("ResourceId"));
+                doElement.setReceiverName(element.getString("ReceiverName"));
+                //Actions
+                JSONObject doActions = element.getJSONObject("Actions");
+                List<DoAction> actions = new ArrayList<DoAction>();
+                Iterator iterIDDoAction = doActions.keys();
+                while(iterIDDoAction.hasNext()){
+                    DoAction action = new DoAction();
+                    String id = (String) iterIDDoAction.next();
+                    action.setName(doActions.getJSONObject(id).getString("name"));
+                    action.setParamType(doActions.getJSONObject(id).getString("type"));
+                    actions.add(action);
+                    Log.i("JSONPARSER", action.getName());
+                    Log.i("JSONPARSER", action.getParamType());
+                }
+                doElement.setActions(actions);
+                doElementsList.add(doElement);
             }
         }catch (Exception e){
             e.printStackTrace();

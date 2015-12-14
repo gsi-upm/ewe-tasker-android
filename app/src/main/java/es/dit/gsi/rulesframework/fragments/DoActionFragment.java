@@ -10,57 +10,52 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.R;
-import es.dit.gsi.rulesframework.SecondActivity;
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
-import es.dit.gsi.rulesframework.model.DoElement;
-import es.dit.gsi.rulesframework.model.IfElement;
+import es.dit.gsi.rulesframework.model.DoAction;
+import es.dit.gsi.rulesframework.model.IfAction;
 
 /**
- * Created by afernandez on 1/12/15.
+ * Created by afernandez on 14/12/15.
  */
-public class DoElementsFragment extends Fragment {
+public class DoActionFragment extends Fragment {
     List<Object> items = new ArrayList<>();
-
-    Context context;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    Context context;
+    List<DoAction> listActions = new ArrayList();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.do_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.actions_fragment,container,false);
+        listActions = getArguments().getParcelableArrayList("actions");
+        Log.i("PARCELABLE", listActions.get(0).getName());
+
 
         //RecyclerView
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listElements);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listActions);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(rootView.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         context = rootView.getContext();
-        if(items.size()>0){
-            items.clear();
-            addDoElementsToLayout();
-        }else{
-            addDoElementsToLayout();
-        }
+        addDoActionsToLayout();
+
         return rootView;
     }
 
-    public void addDoElementsToLayout(){
-        for(DoElement dE : SecondActivity.doElementsList){
-            items.add(dE);
-            Log.i("ADD ITEMS: ", dE.getName());
-            Log.i("ADD ITEMS: ",dE.getActions().get(0).getName());
-
+    public void addDoActionsToLayout(){
+        for(DoAction iA : listActions){
+            items.add(iA);
         }
         mAdapter = new MyRecyclerViewAdapter(context,items,getParentFragment());
-        mRecyclerView.setAdapter(mAdapter);    }
+        mRecyclerView.setAdapter(mAdapter);
+    }
 }

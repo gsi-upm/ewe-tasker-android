@@ -18,6 +18,7 @@ import es.dit.gsi.rulesframework.util.ParameterBundle;
 public class EYEService extends Service {
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
+
     private String canal = "";
     private String action = "";
     private String evento = "";
@@ -39,22 +40,48 @@ public class EYEService extends Service {
     }
 
     /** method for clients */
+    //GETTERS
+    public String getCanal() {
+        return canal;
+    }
+    public String getAction() {
+        return action;
+    }
+    public String getEvento() {
+        return evento;
+    }
+    public String getEventoAction() {
+        return eventoAction;
+    }
+
+    //SETTERS
     public void setCanal(String ifElement) {
+        Log.i("EYEService","Channel: "+ ifElement);
         canal = ifElement;
     }
     public void setAction(String ifAction){
         action = ifAction;
     }
     public void setEvento(String doElement){
-
+        evento = doElement;
     }
     public void setEventoAction(String doAction){
-
+        eventoAction = doAction;
     }
-    public void registerModule(IModulePlugin var1){
+
+    //POST to server
+    public void postRuleInServer(){};
+    public void postInputInServer(){};
+    public void deleteRuleInServer(){};
+
+    //DEBUG
+    public void testService(){
+        Log.i("EYEService","Testing Service...");
+    }
+    /*public void registerModule(IModulePlugin var1){
     }
     public void trigger(String moduleId, String tirggerid, String ruleId, ParameterBundle variables){
         //TODO:Execute trigger
         Log.i("EYEService","Inside trigger");
-    }
+    }*/
 }
