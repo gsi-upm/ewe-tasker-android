@@ -161,11 +161,7 @@
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "name":"Toast",
-          "type":"String"
-        },
-        "2":{
-          "name":"State",
+          "name":"Show",
           "type":"String"
         }
       }

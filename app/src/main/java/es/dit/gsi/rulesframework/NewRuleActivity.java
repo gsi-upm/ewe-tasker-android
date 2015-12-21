@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoFragment;
@@ -43,6 +44,8 @@ public class NewRuleActivity extends FragmentActivity{
 
     public static EYEService mService;
     boolean isBound = false;
+
+    RulesSQLiteHelper db;
 
     private ServiceConnection myConnection = new ServiceConnection() {
 
@@ -76,6 +79,9 @@ public class NewRuleActivity extends FragmentActivity{
         tabHost.addTab(tabHost.newTabSpec("do_fragment").setIndicator("DO"), DoContainerFragment.class, null);
         //Hago que no sea clickable para que no cargue un navegador vacio
         tabHost.getTabWidget().getChildTabViewAt(ID_FRAGMENT_DO).setEnabled(false);
+
+        //DB
+        db =  new RulesSQLiteHelper(this);
 
     }
 

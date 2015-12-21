@@ -1,14 +1,9 @@
 package es.dit.gsi.rulesframework.adapters;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,17 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import es.dit.gsi.rulesframework.MainActivity;
 import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
-import es.dit.gsi.rulesframework.Rule;
-import es.dit.gsi.rulesframework.SecondActivity;
+import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoActionFragment;
 import es.dit.gsi.rulesframework.fragments.IfActionFragment;
@@ -35,7 +26,6 @@ import es.dit.gsi.rulesframework.model.DoAction;
 import es.dit.gsi.rulesframework.model.DoElement;
 import es.dit.gsi.rulesframework.model.IfAction;
 import es.dit.gsi.rulesframework.model.IfElement;
-import es.dit.gsi.rulesframework.services.EYEService;
 import es.dit.gsi.rulesframework.viewholder.ActionViewHolder;
 import es.dit.gsi.rulesframework.viewholder.ElementViewHolder;
 import es.dit.gsi.rulesframework.viewholder.RuleViewHolder;

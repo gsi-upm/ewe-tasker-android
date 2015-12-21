@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.receivers.BluetoothReceiver;
 import es.dit.gsi.rulesframework.receivers.WifiReceiver;
 

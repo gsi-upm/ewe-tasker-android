@@ -11,6 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import es.dit.gsi.rulesframework.model.Rule;
+
 /**
  * Created by afernandez on 23/10/15.
  */

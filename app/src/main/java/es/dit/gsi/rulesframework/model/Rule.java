@@ -1,14 +1,24 @@
-package es.dit.gsi.rulesframework;
+package es.dit.gsi.rulesframework.model;
 
 /**
  * Created by afernandez on 23/10/15.
  */
 public class Rule{
+
+    private int id;
     private String ruleName;
     private String ifElement;
     private String ifAction;
     private String doElement;
     private String doAction;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getIfElement() {
         return ifElement;
@@ -58,6 +68,7 @@ public class Rule{
         this.doAction = doAction;
         this.doElement = doElement;
     }
+    public Rule (){}
     public String getFullRule(){
         return "IF " + ifElement + " " + ifAction + " -> DO " + doElement + " " + doAction + "\n";
     }
