@@ -13,11 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
+import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoActionFragment;
@@ -173,6 +175,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             public void onClick(View v) {
                 //Optional set parameter on bundle
                 IfAction iA = (IfAction)items.get(position);
+                NewRuleActivity.mService.setAction(iA.getName());
                 LayoutInflater inflater = LayoutInflater.from(context);
                 switch (iA.getParamType()){
                     case "boolean":
@@ -221,6 +224,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void configureDoElementViewHolder(ElementViewHolder vh,final int position){
         DoElement dE = (DoElement) items.get(position);
+        NewRuleActivity.mService.setEvento(dE.getName());
         vh.name.setText(dE.getName());
         Log.i("ADAPTER onClick", dE.getActions().get(0).getName());
 
@@ -241,6 +245,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     public void configureDoActionViewHolder (ActionViewHolder vh,final int position){
         DoAction dA = (DoAction) items.get(position);
+        NewRuleActivity.mService.setEventoAction(dA.getName());
         vh.name.setText(dA.getName());
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,9 +292,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             public void saveAndBack() {
                 //TODO:SAVE
+                NewRuleActivity.mService.saveRuleInLocal(context);//SQL
+                NewRuleActivity.mService.postRuleInServer();
                 /*Intent mIntent=new Intent(context,SecondActivity.class);
                 context.startActivity(mIntent);*/
-                ((Activity) context).finish();
+                        ((Activity) context).finish();
 
             }
         });

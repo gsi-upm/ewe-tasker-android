@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
+import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.model.DoAction;
 import es.dit.gsi.rulesframework.model.DoElement;
 import es.dit.gsi.rulesframework.model.IfAction;
@@ -29,7 +30,7 @@ import es.dit.gsi.rulesframework.model.Rule;
 
 public class SecondActivity extends AppCompatActivity {
     List<Object> items = new ArrayList<>();
-
+    List<Rule> rules = new ArrayList<>();
     android.support.design.widget.FloatingActionButton floatingActionButton;
 
     private RecyclerView mRecyclerView;
@@ -39,6 +40,9 @@ public class SecondActivity extends AppCompatActivity {
     public String json;
     public  static List<IfElement> ifElementsList = new ArrayList();
     public  static List<DoElement> doElementsList = new ArrayList();
+
+    //SQL
+    RulesSQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class SecondActivity extends AppCompatActivity {
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new OnFloatingButtonClickListener());
+
+        db = new RulesSQLiteHelper(this);
 
         if(ifElementsList.size()>0) {
             ifElementsList.clear();
@@ -75,8 +81,11 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void addItems(){
-        items.add(new Rule("Example Rule","BLUETOOTH","ON","TOAST","SHOW"));
-
+        items.clear();
+        rules = db.getAllRules();
+        for (Rule r :rules){
+            items.add(r);
+        }
         mAdapter = new MyRecyclerViewAdapter(this,items);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -182,5 +191,11 @@ public class SecondActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         System.exit(0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        addItems();
     }
 }

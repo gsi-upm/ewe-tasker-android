@@ -18,7 +18,7 @@ import es.dit.gsi.rulesframework.model.Rule;
 public class RulesSQLiteHelper extends SQLiteOpenHelper {
 
     //Sentencia SQL para crear la tabla de Usuarios
-    String sqlCreate = "CREATE TABLE Rules (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, ifElement TEXT, ifAction TEXT, doElement TEXT, doAction TEXT,param TEXT)";
+    String sqlCreate = "CREATE TABLE Rules (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, ifElement TEXT, ifAction TEXT, doElement TEXT, doAction TEXT,param TEXT)";
     private static final String DATABASE_NAME = "Rules";
     private static final int DATABASE_VERSION = 1;
 

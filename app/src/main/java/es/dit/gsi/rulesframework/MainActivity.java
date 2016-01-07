@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     static WebView mWebView;
     ArrayAdapter<String> adapter;
     static JavaScriptInterface JSInterface;
-    EditRulesFunctions eyeHandler;
+    //EditRulesFunctions eyeHandler;
     //Receivers
     BluetoothReceiver mBluetoothReceiver= new BluetoothReceiver();
     WifiReceiver mWifiReceiver = new WifiReceiver();
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         mWebView.loadUrl("file:///sdcard/EYEClient/browser/demo/demo.html");
 
         //EYE
-        eyeHandler = new EditRulesFunctions(getApplicationContext());
+        //eyeHandler = new EditRulesFunctions(getApplicationContext());
 
     }
     public void setUpFiles(){
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         //initializeReceiver for the new rule
         startReceiver(ifElementSelected);
         //Crear regla en rules.n3
-        eyeHandler.addRuleToN3(ruleName.getText().toString(), ifElementSelected, ifActionSelected, doElementSelected, doActionSelected);
+        //eyeHandler.addRuleToN3(ruleName.getText().toString(), ifElementSelected, ifActionSelected, doElementSelected, doActionSelected);
         mWebView.reload();
     }
     public void deleteRules(View v){
@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPageFinished(view, url);
             Log.i("TAG","onPageFinished");
             //Ejecuta EYE
-            eyeHandler.pageFinishReloading(hasToExecute);
+            //eyeHandler.pageFinishReloading(hasToExecute);
         }
     }
 
@@ -283,11 +283,11 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void showResult(String result){
-            String doQuote = EditRulesFunctions.getDoFromResult(result);
-            Log.i("EXECUTE EYE","Show Result: " + doQuote);
+            //String doQuote = EditRulesFunctions.getDoFromResult(result);
+            //Log.i("EXECUTE EYE","Show Result: " + doQuote);
             //Toast.makeText(getApplicationContext(),doQuote,Toast.LENGTH_LONG).show();
             //Handle result string from EYE
-            eyeHandler.executeDoResponse(doQuote);
+            //eyeHandler.executeDoResponse(doQuote);
         }
     }
 }

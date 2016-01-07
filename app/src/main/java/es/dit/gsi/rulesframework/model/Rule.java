@@ -4,6 +4,8 @@ package es.dit.gsi.rulesframework.model;
  * Created by afernandez on 23/10/15.
  */
 public class Rule{
+    public static String prefix = "@prefix ppl: <http://example.org/people#>. " +
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/>. ";
 
     private int id;
     private String ruleName;
@@ -71,5 +73,17 @@ public class Rule{
     public Rule (){}
     public String getFullRule(){
         return "IF " + ifElement + " " + ifAction + " -> DO " + doElement + " " + doAction + "\n";
+    }
+    public String getEyeRule(){
+
+        String ifStatement = "{ppl:" + ifElement + " foaf:knows " + "ppl:" + ifAction + "}=> ";
+        String doStatement = "{ppl:" + doElement + " foaf:knows " + "ppl:" + doAction + "}.";
+
+        return prefix+ifStatement+doStatement;
+    }
+
+    public static String getInput(String ifElement, String ifAction){
+        String input = "ppl:" + ifElement + " foaf:knows " + "ppl:" + ifAction + ".";
+        return prefix + input;
     }
 }
