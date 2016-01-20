@@ -158,7 +158,7 @@
       "Name":"Notification",
       "Type":"Conexion",
       "ResourceId":"",
-      "ReceiverName":"",
+      "ReceiverName":"ToastManager",
       "Actions":{
         "1":{
           "name":"Show",

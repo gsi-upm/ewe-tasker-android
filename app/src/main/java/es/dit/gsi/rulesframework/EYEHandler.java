@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
 import cz.msebera.android.httpclient.util.EntityUtils;
+import es.dit.gsi.rulesframework.model.DoElement;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.services.EYEService;
 
@@ -67,9 +69,11 @@ public class EYEHandler {
         String res = ":"+ ifElement + " :status :" + ifAction + ".\n";
         return res;
     }
-    //Delete all doc and rewrite it
-    public void sendInputToEye(String ifElement,String ifAction){
 
+    public void sendInputToEye(String ifElement,String ifAction){
+        //TODO: Input to Server
+        //TODO: Handle Response
+        executeDoResponse("Notification","SHOW");
     }
     public void pageFinishReloading(boolean execute){
         if(execute){
@@ -101,11 +105,28 @@ public class EYEHandler {
         return result;
     }
 
-    public void executeDoResponse(String doResponse){
-        switch (doResponse){
+    public void executeDoResponse(String doElement, String doAction){
+        //Create instance of manager name
+        try {
+            switch (doElement){
+                //FilterManagers
+                case("Notification"):
+                    ToastManager tm = new ToastManager(context);
+                    //Filter actions
+                    switch (doAction){
+                        case "SHOW":tm.showCustomToast("Hello");break;
+                    }
+                    break;
+                default:
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /*switch (doResponse){
             case ":Toast :status :SHOW.":
                 new ToastManager(context).showCustomToast("SHOW");break;
-        }
+        }*/
     }
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {

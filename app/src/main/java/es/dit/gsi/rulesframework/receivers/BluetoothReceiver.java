@@ -26,11 +26,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 case BluetoothAdapter.STATE_OFF:
                     //"Bluetooth off"
                     Log.i("RULESFW", "Bluetooth OFF");
-
-                    Intent myIntent=new Intent(context,EYEService.class);
-                    myIntent.putExtra("input",Rule.getInput("Bluetooth","OFF"));
-                    context.startService(myIntent);
-
                     eyeHandler.sendInputToEye("Bluetooth", "OFF");
                     break;
                 case BluetoothAdapter.STATE_TURNING_OFF:
@@ -40,11 +35,8 @@ public class BluetoothReceiver extends BroadcastReceiver {
                     //"Bluetooth on"
                     Log.i("RULESFW", "Bluetooth ON");
                     //Send input to EYE
-                    Intent myIntent2=new Intent(context,EYEService.class);
-                    myIntent2.putExtra("input",Rule.getInput("Bluetooth","ON"));
-                    context.startService(myIntent2);
-
-                    eyeHandler.sendInputToEye("Bluetooth", "OFF");                    break;
+                    eyeHandler.sendInputToEye("Bluetooth", "ON");
+                    break;
                 case BluetoothAdapter.STATE_TURNING_ON:
                     //"Turning Bluetooth on..."
                     break;
