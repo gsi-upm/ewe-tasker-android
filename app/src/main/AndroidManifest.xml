@@ -13,6 +13,8 @@
 
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 
     <application
@@ -55,6 +57,7 @@
         </activity>
         <activity android:name=".NewRuleActivity"></activity>
         <service android:name=".services.EYEService" android:enabled="true"/>
+        <service android:name=".services.GeofenceIntentService"/>
     </application>
 
 </manifest>

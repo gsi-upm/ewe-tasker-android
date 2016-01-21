@@ -51,6 +51,9 @@ public class EYEService extends Service {
     private String evento = "";
     private String eventoAction = "";
 
+    private Object actionParameter = "";
+    private  Object eventoActionParameter = "";
+
     private String input = "";
     /**
      * Class used for the client Binder.  Because we know this service always
@@ -118,9 +121,25 @@ public class EYEService extends Service {
         eventoAction = doAction;
     }
 
+    public Object getEventoActionParameter() {
+        return eventoActionParameter;
+    }
+
+    public void setEventoActionParameter(Object eventoActionParameter) {
+        this.eventoActionParameter = eventoActionParameter;
+    }
+
+    public Object getActionParameter() {
+        return actionParameter;
+    }
+
+    public void setActionParameter(Object actionParameter) {
+        this.actionParameter = actionParameter;
+    }
+
     //POST to server
     public void postRuleInServer() {
-        new EYEHandler.PostRuleToServerTask().execute(new Rule("name",getCanal(),getAction(),getEvento(),getEventoAction()));
+        new EYEHandler.PostRuleToServerTask().execute(new Rule("name",getCanal(),getAction(),getEvento(),getEventoAction(),getActionParameter(),getEventoActionParameter()));
     }
 
     public void postInputInServer(String input) {
@@ -136,7 +155,7 @@ public class EYEService extends Service {
 
     //LOCAL
     public void saveRuleInLocal(Context context) {
-        Rule mRule = new Rule("name", getCanal(), getAction(), getEvento(), getEventoAction());
+        Rule mRule = new Rule("name",getCanal(),getAction(),getEvento(),getEventoAction(),getActionParameter(),getEventoActionParameter());
         RulesSQLiteHelper db = new RulesSQLiteHelper(this);
         db.addRule(mRule);
         Log.i("LOCAL", "Rule saved");

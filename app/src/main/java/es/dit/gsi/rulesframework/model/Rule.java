@@ -11,8 +11,12 @@ public class Rule{
     private String ruleName;
     private String ifElement;
     private String ifAction;
+
     private String doElement;
     private String doAction;
+
+    private Object ifParameter;
+    private Object doParameter;
 
     public int getId() {
         return id;
@@ -62,13 +66,31 @@ public class Rule{
         this.ruleName = ruleName;
     }
 
-    public Rule(String ruleName, String ifElement, String ifAction, String doElement, String doAction) {
+    public Object getIfParameter() {
+        return ifParameter;
+    }
+
+    public void setIfParameter(Object ifParameter) {
+        this.ifParameter = ifParameter;
+    }
+
+    public Object getDoParameter() {
+        return doParameter;
+    }
+
+    public void setDoParameter(Object doParameter) {
+        this.doParameter = doParameter;
+    }
+
+    public Rule(String ruleName, String ifElement, String ifAction, String doElement, String doAction,Object ifParameter, Object doParameter) {
         this.ruleName = ruleName;
 
         this.ifElement = ifElement;
         this.ifAction = ifAction;
         this.doAction = doAction;
         this.doElement = doElement;
+        this.ifParameter = ifParameter;
+        this.doParameter = doParameter;
     }
     public Rule (){}
     public String getFullRule(){

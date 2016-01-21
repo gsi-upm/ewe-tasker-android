@@ -151,6 +151,22 @@
           "type":"Integer"
         }
       }
+    },
+    "10":{
+      "Name": "Location",
+      "Type": "Conexion",
+      "ResourceId":"",
+      "ReceiverName":"",
+      "Actions":{
+        "1":{
+          "name":"Enter",
+          "type":"Geofence"
+        },
+        "2":{
+          "name":"Exit",
+          "type":"Geofence"
+        }
+      }
     }
   },
   "doElements":{

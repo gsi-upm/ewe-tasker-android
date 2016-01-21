@@ -26,7 +26,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 case BluetoothAdapter.STATE_OFF:
                     //"Bluetooth off"
                     Log.i("RULESFW", "Bluetooth OFF");
-                    eyeHandler.sendInputToEye("Bluetooth", "OFF");
+                    eyeHandler.sendInputToEye("Bluetooth", "OFF", "null");
                     break;
                 case BluetoothAdapter.STATE_TURNING_OFF:
                     //"Turning Bluetooth off..."
@@ -35,7 +35,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
                     //"Bluetooth on"
                     Log.i("RULESFW", "Bluetooth ON");
                     //Send input to EYE
-                    eyeHandler.sendInputToEye("Bluetooth", "ON");
+                    eyeHandler.sendInputToEye("Bluetooth", "ON", "null");
                     break;
                 case BluetoothAdapter.STATE_TURNING_ON:
                     //"Turning Bluetooth on..."

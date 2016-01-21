@@ -70,10 +70,10 @@ public class EYEHandler {
         return res;
     }
 
-    public void sendInputToEye(String ifElement,String ifAction){
+    public void sendInputToEye(String ifElement,String ifAction,String parameter){
         //TODO: Input to Server
         //TODO: Handle Response
-        executeDoResponse("Notification","SHOW");
+        executeDoResponse("Notification","SHOW", "parameter");
     }
     public void pageFinishReloading(boolean execute){
         if(execute){
@@ -105,7 +105,7 @@ public class EYEHandler {
         return result;
     }
 
-    public void executeDoResponse(String doElement, String doAction){
+    public void executeDoResponse(String doElement, String doAction,String parameter){
         //Create instance of manager name
         try {
             switch (doElement){
@@ -114,7 +114,7 @@ public class EYEHandler {
                     ToastManager tm = new ToastManager(context);
                     //Filter actions
                     switch (doAction){
-                        case "SHOW":tm.showCustomToast("Hello");break;
+                        case "SHOW":tm.showCustomToast(parameter);break;
                     }
                     break;
                 default:

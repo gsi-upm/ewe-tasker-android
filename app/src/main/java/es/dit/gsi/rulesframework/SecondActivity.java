@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
+import es.dit.gsi.rulesframework.geofences.GeofenceController;
 import es.dit.gsi.rulesframework.model.DoAction;
 import es.dit.gsi.rulesframework.model.DoElement;
 import es.dit.gsi.rulesframework.model.IfAction;
@@ -29,6 +32,7 @@ import es.dit.gsi.rulesframework.model.IfElement;
 import es.dit.gsi.rulesframework.model.Rule;
 
 public class SecondActivity extends AppCompatActivity {
+
     List<Object> items = new ArrayList<>();
     List<Rule> rules = new ArrayList<>();
     android.support.design.widget.FloatingActionButton floatingActionButton;
@@ -38,11 +42,12 @@ public class SecondActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 
     public String json;
-    public  static List<IfElement> ifElementsList = new ArrayList();
-    public  static List<DoElement> doElementsList = new ArrayList();
+    public static List<IfElement> ifElementsList = new ArrayList();
+    public static List<DoElement> doElementsList = new ArrayList();
 
     //SQL
     RulesSQLiteHelper db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +65,17 @@ public class SecondActivity extends AppCompatActivity {
 
         db = new RulesSQLiteHelper(this);
 
-        if(ifElementsList.size()>0) {
+        if (ifElementsList.size() > 0) {
             ifElementsList.clear();
-        }else {
+        } else {
             json = loadJSONFromAsset("elements.json");
             JSONParse(json);
             addItems();
         }
-
+        GeofenceController.getInstance().init(this);
+        if(GeofenceController.getInstance().getNamedGeofences().size()>0){
+            Log.i("GEOFENCE", String.valueOf(GeofenceController.getInstance().getNamedGeofences().get(0).name));
+        }
     }
 
     @Override
@@ -80,20 +88,21 @@ public class SecondActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void addItems(){
+    public void addItems() {
         items.clear();
         rules = db.getAllRules();
-        for (Rule r :rules){
+        for (Rule r : rules) {
             items.add(r);
         }
-        mAdapter = new MyRecyclerViewAdapter(this,items);
+        mAdapter = new MyRecyclerViewAdapter(this, items);
         mRecyclerView.setAdapter(mAdapter);
     }
+
 
     public class OnFloatingButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(v.getContext(),NewRuleActivity.class);
+            Intent i = new Intent(v.getContext(), NewRuleActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
@@ -119,20 +128,20 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     //Read JSON
-    public void JSONParse(String json){
+    public void JSONParse(String json) {
 
-        try{
+        try {
             JSONObject jsonObject = new JSONObject(json);
 
             //IF
             JSONObject ifElements = jsonObject.getJSONObject("ifElements");
 
             Iterator iterIdIfElement = ifElements.keys();
-            while (iterIdIfElement.hasNext()){
-                String idElement= String.valueOf(iterIdIfElement.next());
+            while (iterIdIfElement.hasNext()) {
+                String idElement = String.valueOf(iterIdIfElement.next());
                 JSONObject element = ifElements.getJSONObject(idElement);
 
-                IfElement ifElement= new IfElement();
+                IfElement ifElement = new IfElement();
                 ifElement.setName(element.getString("Name"));
                 ifElement.setType(element.getString("Type"));
                 ifElement.setResourceName(element.getString("ResourceId"));
@@ -141,7 +150,7 @@ public class SecondActivity extends AppCompatActivity {
                 JSONObject ifActions = element.getJSONObject("Actions");
                 List<IfAction> actions = new ArrayList<IfAction>();
                 Iterator iterIDIfAction = ifActions.keys();
-                while(iterIDIfAction.hasNext()){
+                while (iterIDIfAction.hasNext()) {
                     IfAction action = new IfAction();
                     String id = (String) iterIDIfAction.next();
                     action.setName(ifActions.getJSONObject(id).getString("name"));
@@ -157,11 +166,11 @@ public class SecondActivity extends AppCompatActivity {
             //DO
             JSONObject doElements = jsonObject.getJSONObject("doElements");
             Iterator iterIdDoElement = ifElements.keys();
-            while (iterIdDoElement.hasNext()){
-                String idElement= String.valueOf(iterIdDoElement.next());
+            while (iterIdDoElement.hasNext()) {
+                String idElement = String.valueOf(iterIdDoElement.next());
                 JSONObject element = doElements.getJSONObject(idElement);
 
-                DoElement doElement= new DoElement();
+                DoElement doElement = new DoElement();
                 doElement.setName(element.getString("Name"));
                 doElement.setType(element.getString("Type"));
                 doElement.setResourceName(element.getString("ResourceId"));
@@ -170,7 +179,7 @@ public class SecondActivity extends AppCompatActivity {
                 JSONObject doActions = element.getJSONObject("Actions");
                 List<DoAction> actions = new ArrayList<DoAction>();
                 Iterator iterIDDoAction = doActions.keys();
-                while(iterIDDoAction.hasNext()){
+                while (iterIDDoAction.hasNext()) {
                     DoAction action = new DoAction();
                     String id = (String) iterIDDoAction.next();
                     action.setName(doActions.getJSONObject(id).getString("name"));
@@ -182,7 +191,7 @@ public class SecondActivity extends AppCompatActivity {
                 doElement.setActions(actions);
                 doElementsList.add(doElement);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -197,5 +206,16 @@ public class SecondActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         addItems();
+
+        int googlePlayServicesCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        Log.i(SecondActivity.class.getSimpleName(), "googlePlayServicesCode = " + googlePlayServicesCode);
+
+        if (googlePlayServicesCode == 1 || googlePlayServicesCode == 2 || googlePlayServicesCode == 3) {
+            GooglePlayServicesUtil.getErrorDialog(googlePlayServicesCode, this, 0).show();
+        }
+
+        //Geofences
+
+
     }
 }

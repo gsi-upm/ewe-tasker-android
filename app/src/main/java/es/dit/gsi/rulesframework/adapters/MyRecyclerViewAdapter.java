@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.List;
 import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
+import es.dit.gsi.rulesframework.geofences.GeofenceController;
+import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoActionFragment;
@@ -185,12 +188,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         //Request String parameter
                         final AlertDialog.Builder alert = new AlertDialog.Builder(context);
                         //this is what I did to added the layout to the alert dialog
-                        View layout=inflater.inflate(R.layout.set_parameter,null);
+                        final View layout=inflater.inflate(R.layout.set_parameter,null);
                         alert.setView(layout);
                         alert.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO:SAVE
+                                EditText stringField = (EditText) layout.findViewById(R.id.parameter);
+                                NewRuleActivity.mService.setActionParameter(stringField.getText().toString());
                                 changeToDoTab();
                             }
                         });
@@ -200,17 +204,60 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         //Request Integer parameter
                         final AlertDialog.Builder alertInt = new AlertDialog.Builder(context);
                         //this is what I did to added the layout to the alert dialog
-                        View layoutInt=inflater.inflate(R.layout.set_parameter,null);
+                        final View layoutInt=inflater.inflate(R.layout.set_parameter,null);
                         alertInt.setView(layoutInt);
                         alertInt.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                            //TODO:SAVE
-                            changeToDoTab();
+                                EditText stringField = (EditText) layoutInt.findViewById(R.id.parameter);
+                                NewRuleActivity.mService.setActionParameter(stringField.getText().toString());
+                                changeToDoTab();
                             }
                         });
                         alertInt.show();
                         break;
+                    case  "Geofence":
+                        //Request Geofence
+                        //TODO:Store Geofences
+                        final AlertDialog.Builder alertGeo = new AlertDialog.Builder(context);
+                        //this is what I did to added the layout to the alert dialog
+                        final View layoutGeo=inflater.inflate(R.layout.set_geofence,null);
+                        alertGeo.setView(layoutGeo);
+                        alertGeo.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO:SAVE
+                                EditText name = (EditText) layoutGeo.findViewById(R.id.name);
+                                EditText latitude = (EditText) layoutGeo.findViewById(R.id.latitude);
+                                EditText longitude = (EditText) layoutGeo.findViewById(R.id.longitude);
+                                EditText radius = (EditText) layoutGeo.findViewById(R.id.radius);
+
+                                //Create Geofence
+                                String nombre = name.getText().toString();
+                                float lat = Float.parseFloat(latitude.getText().toString());
+                                float longit = Float.parseFloat(longitude.getText().toString());
+                                float rad = Float.parseFloat(radius.getText().toString());
+
+                                NamedGeofence geofence = new NamedGeofence(nombre,lat,longit,rad);
+                                //TODO:SAVE GEOFENCE
+                                NewRuleActivity.mService.setActionParameter(geofence.name);
+                                GeofenceController.GeofenceControllerListener geofenceControllerListener = new GeofenceController.GeofenceControllerListener() {
+                                    @Override
+                                    public void onGeofencesUpdated() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                    }
+                                };
+                                GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
+                                changeToDoTab();
+                            }
+                        });
+                        alertGeo.show();
+
 
                 }
             }

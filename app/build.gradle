@@ -29,7 +29,7 @@ dependencies {
     compile 'com.atooma:atooma-android-sdk:1.2.1@aar'
     //Apache
     compile "cz.msebera.android:httpclient:4.4.1.1"
-    //compile 'org.apache.httpcomponents:httpcore:4.4.1'
-    //compile 'org.apache.httpcomponents:httpclient:4.5'
+    //Geofence
+    compile 'com.google.android.gms:play-services-location:6.5.87'
 
 }

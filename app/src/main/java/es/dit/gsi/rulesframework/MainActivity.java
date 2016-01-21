@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void newRule(View v){
-        TextView rule = new TextView(this);
+        /*TextView rule = new TextView(this);
         String ifElementSelected = ifElement.getSelectedItem().toString();
         String ifActionSelected = ifAction.getSelectedItem().toString();
         String doElementSelected = doElement.getSelectedItem().toString();
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         startReceiver(ifElementSelected);
         //Crear regla en rules.n3
         //eyeHandler.addRuleToN3(ruleName.getText().toString(), ifElementSelected, ifActionSelected, doElementSelected, doActionSelected);
-        mWebView.reload();
+        mWebView.reload();*/
     }
     public void deleteRules(View v){
         Constants.ACTIVE_RULES_LIST = new ArrayList<>();

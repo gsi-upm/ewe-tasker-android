@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
     public void addRule(Rule rule){
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
-
+        String[] e = {""};
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         values.put("name", rule.getRuleName());
@@ -57,6 +58,8 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
         values.put("ifAction", rule.getIfAction());
         values.put("doElement", rule.getDoElement());
         values.put("doAction", rule.getDoAction());
+        values.put("ifParameter", (String) rule.getIfParameter());
+        values.put("doParameter", (String) rule.getDoParameter());
 
 
 
