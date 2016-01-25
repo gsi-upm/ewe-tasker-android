@@ -30,6 +30,6 @@ dependencies {
     //Apache
     compile "cz.msebera.android:httpclient:4.4.1.1"
     //Geofence
-    compile 'com.google.android.gms:play-services-location:6.5.87'
+    compile 'com.google.android.gms:play-services:8.1.0'
 
 }

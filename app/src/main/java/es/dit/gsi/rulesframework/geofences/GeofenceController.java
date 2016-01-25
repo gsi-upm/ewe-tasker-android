@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -77,16 +78,16 @@ public class GeofenceController {
             new GoogleApiClient.ConnectionCallbacks() {
                 @Override
                 public void onConnected(Bundle bundle) {
-// 1. Create an IntentService PendingIntent
+                // 1. Create an IntentService PendingIntent
                     Intent intent = new Intent(context, NewRuleActivity.class);
                     PendingIntent pendingIntent =
                             PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-// 2. Associate the service PendingIntent with the geofence and call addGeofences
+                // 2. Associate the service PendingIntent with the geofence and call addGeofences
                     PendingResult<Status> result = LocationServices.GeofencingApi.addGeofences(
                             googleApiClient, getAddGeofencingRequest(), pendingIntent);
 
-// 3. Implement PendingResult callback
+                // 3. Implement PendingResult callback
                     result.setResultCallback(new ResultCallback<Status>() {
 
                         @Override
@@ -178,6 +179,7 @@ public class GeofenceController {
 
         // Sort namedGeofences by name
         Collections.sort(namedGeofences);
+
     }
 
     private GoogleApiClient.ConnectionCallbacks connectionRemoveListener =
