@@ -1,5 +1,6 @@
 package es.dit.gsi.rulesframework.database;
 
+import android.app.admin.DeviceAdminReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,7 +20,7 @@ import es.dit.gsi.rulesframework.model.Rule;
 public class RulesSQLiteHelper extends SQLiteOpenHelper {
 
     //Sentencia SQL para crear la tabla de Usuarios
-    String sqlCreate = "CREATE TABLE Rules (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, ifElement TEXT, ifAction TEXT, doElement TEXT, doAction TEXT,param TEXT)";
+    String sqlCreate = "CREATE TABLE Rules (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, ifElement TEXT, ifAction TEXT, doElement TEXT, doAction TEXT,ifParameter TEXT, doParameter TEXT)";
     private static final String DATABASE_NAME = "Rules";
     private static final int DATABASE_VERSION = 1;
 
@@ -92,7 +93,8 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
                 rule.setIfAction(cursor.getString(3));
                 rule.setDoElement(cursor.getString(4));
                 rule.setDoAction(cursor.getString(5));
-                //TODO: rule.setParam(cursor.getString(6));
+                rule.setIfParameter(cursor.getString(6));
+                rule.setDoParameter(cursor.getString(7));
 
                 list.add(rule);
             } while (cursor.moveToNext());
@@ -101,6 +103,13 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
         Log.d("getAllRules()", "getRules");
 
         return list;
+    }
+
+    public void deleteAllRules(){
+        Log.i("Database","Delete All Rules");
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_NAME,null,null);
+        db.close();
     }
 
 }

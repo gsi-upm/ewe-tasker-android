@@ -3,6 +3,7 @@ package es.dit.gsi.rulesframework.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -14,14 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.io.IOException;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
-import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
-import es.dit.gsi.rulesframework.geofences.GeofenceController;
 import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
@@ -33,6 +33,7 @@ import es.dit.gsi.rulesframework.model.IfAction;
 import es.dit.gsi.rulesframework.model.IfElement;
 import es.dit.gsi.rulesframework.viewholder.ActionViewHolder;
 import es.dit.gsi.rulesframework.viewholder.ElementViewHolder;
+import es.dit.gsi.rulesframework.viewholder.GeofenceViewHolder;
 import es.dit.gsi.rulesframework.viewholder.RuleViewHolder;
 
 /**
@@ -44,8 +45,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List<Object> items;
     Context context;
     Fragment parentFragment;
+    private Gson gson;
+    private SharedPreferences prefs;
 
-    private final int RULE = 0, IF_ELEMENT=1, IF_ACTION=2, DO_ELEMENT =3, DO_ACTION =4;
+    private final int RULE = 0, IF_ELEMENT=1, IF_ACTION=2, DO_ELEMENT =3, DO_ACTION =4, GEOFENCE=5;
 
 
     public MyRecyclerViewAdapter(Context context, List<Object> items) {
@@ -75,6 +78,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(items.get(position) instanceof DoAction){
             return DO_ACTION;
         }
+        if(items.get(position) instanceof NamedGeofence){
+            return GEOFENCE;
+        }
         return -1;
     }
     @Override
@@ -102,6 +108,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case DO_ACTION:
                 View v5 = inflater.inflate(R.layout.recyclerview_item_action,parent,false);
                 viewHolder = new ActionViewHolder(v5);
+                break;
+            case GEOFENCE:
+                View v6 = inflater.inflate(R.layout.recyclerview_item_geofence,parent,false);
+                viewHolder = new GeofenceViewHolder(v6);
                 break;
             default:
                 viewHolder=null;
@@ -133,6 +143,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ActionViewHolder vh5 = (ActionViewHolder) holder;
                 configureDoActionViewHolder(vh5, position);
                 break;
+            case GEOFENCE:
+                GeofenceViewHolder vh6 = (GeofenceViewHolder) holder;
+                configureGeofenceViewHolder(vh6, position);
+                break;
         }
     }
 
@@ -142,9 +156,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void configureRuleViewholder(RuleViewHolder vh, int position){
+        Log.i("Rules","Configure Rule ViewHolder");
         Rule mRule = (Rule) items.get(position);
 
-        vh.ifElement.setText(mRule.getRuleName());
+        vh.ifElement.setText("RuleName");
         vh.descriptionRule.setText(mRule.getFullRule());
     }
 
@@ -156,7 +171,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Save on EYEService
+                //Save on RuleDefinitionModule
                 NewRuleActivity.mService.setCanal(iE.getName());
                 //Optional set parameter on bundle
                 Bundle bundle = new Bundle();
@@ -194,7 +209,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText stringField = (EditText) layout.findViewById(R.id.parameter);
-                                NewRuleActivity.mService.setActionParameter(stringField.getText().toString());
+                                //Save parameter
+                                NewRuleActivity.mService.setIfParameter(stringField.getText().toString());
                                 changeToDoTab();
                             }
                         });
@@ -210,7 +226,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText stringField = (EditText) layoutInt.findViewById(R.id.parameter);
-                                NewRuleActivity.mService.setActionParameter(stringField.getText().toString());
+                                NewRuleActivity.mService.setIfParameter(stringField.getText().toString());
                                 changeToDoTab();
                             }
                         });
@@ -218,7 +234,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         break;
                     case  "Geofence":
                         //Request Geofence
-                        //TODO:Store Geofences
                         final AlertDialog.Builder alertGeo = new AlertDialog.Builder(context);
                         //this is what I did to added the layout to the alert dialog
                         final View layoutGeo=inflater.inflate(R.layout.set_geofence,null);
@@ -226,7 +241,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         alertGeo.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO:SAVE
                                 EditText name = (EditText) layoutGeo.findViewById(R.id.name);
                                 EditText latitude = (EditText) layoutGeo.findViewById(R.id.latitude);
                                 EditText longitude = (EditText) layoutGeo.findViewById(R.id.longitude);
@@ -238,21 +252,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 float longit = Float.parseFloat(longitude.getText().toString());
                                 float rad = Float.parseFloat(radius.getText().toString());
 
-                                NamedGeofence geofence = new NamedGeofence(nombre,lat,longit,rad);
-                                //TODO:SAVE GEOFENCE
-                                NewRuleActivity.mService.setActionParameter(geofence.name);
-                                GeofenceController.GeofenceControllerListener geofenceControllerListener = new GeofenceController.GeofenceControllerListener() {
-                                    @Override
-                                    public void onGeofencesUpdated() {
+                                /**SAVE GEOFENCE**/
+                                NamedGeofence geofence = new NamedGeofence(nombre, lat, longit, rad);
+                                //Get from local
+                                gson = new Gson();
+                                prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-                                    }
+                                //Save new geofence
+                                String json = gson.toJson(geofence);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString(geofence.id, json);
+                                editor.apply();
 
-                                    @Override
-                                    public void onError() {
-
-                                    }
-                                };
-                                GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
+                                NewRuleActivity.mService.setIfParameter(geofence.name);
                                 changeToDoTab();
                             }
                         });
@@ -308,12 +320,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         //Request String parameter
                         final AlertDialog.Builder alert = new AlertDialog.Builder(context);
                         //this is what I did to added the layout to the alert dialog
-                        View layout = inflater.inflate(R.layout.set_parameter, null);
+                        final View layout = inflater.inflate(R.layout.set_parameter, null);
                         alert.setView(layout);
                         alert.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO:SAVE
+                                EditText stringField = (EditText) layout.findViewById(R.id.parameter);
+                                //Save parameter
+                                NewRuleActivity.mService.setDoParameter(stringField.getText().toString());
                                 saveAndBack();
                             }
                         });
@@ -323,12 +337,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         //Request Integer parameter
                         final AlertDialog.Builder alertInt = new AlertDialog.Builder(context);
                         //this is what I did to added the layout to the alert dialog
-                        View layoutInt = inflater.inflate(R.layout.set_parameter, null);
+                        final View layoutInt = inflater.inflate(R.layout.set_parameter, null);
                         alertInt.setView(layoutInt);
                         alertInt.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO:SAVE
+                                EditText stringField = (EditText) layoutInt.findViewById(R.id.parameter);
+                                //Save parameter
+                                NewRuleActivity.mService.setDoParameter(stringField.getText().toString());
                                 saveAndBack();
                             }
                         });
@@ -338,16 +354,25 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
 
             public void saveAndBack() {
-                //TODO:SAVE
                 NewRuleActivity.mService.saveRuleInLocal(context);//SQL
                 NewRuleActivity.mService.postRuleInServer();
                 /*Intent mIntent=new Intent(context,SecondActivity.class);
                 context.startActivity(mIntent);*/
-                        ((Activity) context).finish();
+                ((Activity) context).finish();
 
             }
         });
     }
 
+    public void configureGeofenceViewHolder(final GeofenceViewHolder vh,final int position){
+        NamedGeofence ng = (NamedGeofence) items.get(position);
+
+        vh.logoGeofence.setImageResource(R.mipmap.ic_launcher);
+
+        vh.title.setText(ng.name);
+        vh.latitude.setText(String.valueOf(ng.latitude));
+        vh.longitude.setText(String.valueOf(ng.longitude));
+        vh.radius.setText(String.valueOf(ng.radius));
+    }
 
 }

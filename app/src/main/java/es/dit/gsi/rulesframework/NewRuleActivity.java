@@ -1,6 +1,5 @@
 package es.dit.gsi.rulesframework;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,26 +11,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.LinearLayout;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoContainerFragment;
-import es.dit.gsi.rulesframework.fragments.DoFragment;
 import es.dit.gsi.rulesframework.fragments.IfContainerFragment;
-import es.dit.gsi.rulesframework.model.IfAction;
-import es.dit.gsi.rulesframework.model.IfElement;
-import es.dit.gsi.rulesframework.services.EYEService;
+import es.dit.gsi.rulesframework.services.RuleDefinitionModule;
 
 /**
  * Created by afernandez on 27/11/15.
@@ -42,7 +27,7 @@ public class NewRuleActivity extends FragmentActivity{
     FragmentPagerAdapter adapterViewPager;
     public static FragmentTabHost tabHost;
 
-    public static EYEService mService;
+    public static RuleDefinitionModule mService;
     boolean isBound = false;
 
     RulesSQLiteHelper db;
@@ -51,7 +36,7 @@ public class NewRuleActivity extends FragmentActivity{
 
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
-            EYEService.LocalBinder binder = (EYEService.LocalBinder) service;
+            RuleDefinitionModule.LocalBinder binder = (RuleDefinitionModule.LocalBinder) service;
             mService = binder.getService();
             isBound = true;
         }
@@ -68,8 +53,8 @@ public class NewRuleActivity extends FragmentActivity{
         setContentView(R.layout.activity_new_rule);
 
         //Service
-        Log.i("EYEService", "Service Connected");
-        Intent intent = new Intent(this, EYEService.class);
+        Log.i("RuleDefinitionModule", "Service Connected");
+        Intent intent = new Intent(this, RuleDefinitionModule.class);
         bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
 
         //Tabhost
@@ -102,10 +87,5 @@ public class NewRuleActivity extends FragmentActivity{
         if (!isPopFragment) {
             finish();
         }
-    }
-
-    public void initEYEService(){
-
-
     }
 }

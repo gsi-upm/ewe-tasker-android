@@ -1,20 +1,14 @@
 package es.dit.gsi.rulesframework.receivers;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.util.Calendar;
-
-import es.dit.gsi.rulesframework.EYEHandler;
+import es.dit.gsi.rulesframework.RuleExecutionModule;
 
 /**
  * Created by afernandez on 8/01/16.
@@ -24,7 +18,7 @@ public class CalendarReminderReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equalsIgnoreCase(CalendarContract.ACTION_EVENT_REMINDER)){
-            EYEHandler eyeHandler = new EYEHandler(context);
+            RuleExecutionModule ruleExecutionModule = new RuleExecutionModule(context);
 
             Uri uri = intent.getData();
 
@@ -44,9 +38,8 @@ public class CalendarReminderReceiver extends BroadcastReceiver
             //TODO:Contains keyword Meeting
             String pattern = "Meeting";
             if(nameEventTriggered.contains(pattern)){
-                eyeHandler.sendInputToEye("Calendar","EventTriggered", "true");//Match pattern
+                ruleExecutionModule.sendInputToEye("Calendar","mobile");//Match pattern
             }else{
-                eyeHandler.sendInputToEye("Calendar","EventTriggered", "false");
             }
 
         }

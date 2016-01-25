@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import es.dit.gsi.rulesframework.EYEHandler;
-import es.dit.gsi.rulesframework.model.Rule;
-import es.dit.gsi.rulesframework.services.EYEService;
+import es.dit.gsi.rulesframework.RuleExecutionModule;
 
 /**
  * Created by afernandez on 26/10/15.
@@ -17,16 +15,17 @@ public class BluetoothReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
             String channel="";
-            String event = "";
+            String input = "";
 
             final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
             //EYE Functions
-            EYEHandler eyeHandler = new EYEHandler(context);
+            RuleExecutionModule ruleExecutionModule = new RuleExecutionModule(context);
             switch (state) {
                 case BluetoothAdapter.STATE_OFF:
                     //"Bluetooth off"
                     Log.i("RULESFW", "Bluetooth OFF");
-                    eyeHandler.sendInputToEye("Bluetooth", "OFF", "null");
+                    input = generateInput("ON");
+                    ruleExecutionModule.sendInputToEye(input,channel);
                     break;
                 case BluetoothAdapter.STATE_TURNING_OFF:
                     //"Turning Bluetooth off..."
@@ -35,11 +34,25 @@ public class BluetoothReceiver extends BroadcastReceiver {
                     //"Bluetooth on"
                     Log.i("RULESFW", "Bluetooth ON");
                     //Send input to EYE
-                    eyeHandler.sendInputToEye("Bluetooth", "ON", "null");
+                    input = generateInput("ON");
+                    ruleExecutionModule.sendInputToEye(input, channel);
                     break;
                 case BluetoothAdapter.STATE_TURNING_ON:
                     //"Turning Bluetooth on..."
                     break;
             }
+    }
+
+    public String generateInput(String action){
+        String input = "";
+        switch (action){
+            case "ON":
+                input = "";break;
+            case "OFF":
+                input = "";break;
+
+        }
+
+        return input;
     }
 }

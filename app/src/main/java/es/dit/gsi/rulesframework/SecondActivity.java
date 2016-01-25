@@ -12,19 +12,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -39,14 +38,13 @@ import java.util.Map;
 
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
-import es.dit.gsi.rulesframework.geofences.GeofenceController;
 import es.dit.gsi.rulesframework.model.DoAction;
 import es.dit.gsi.rulesframework.model.DoElement;
 import es.dit.gsi.rulesframework.model.IfAction;
 import es.dit.gsi.rulesframework.model.IfElement;
 import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
-import es.dit.gsi.rulesframework.services.GeofenceIntentService;
+import es.dit.gsi.rulesframework.receivers.GeofenceIntentService;
 
 public class SecondActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks , GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
@@ -98,8 +96,9 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         } else {
             json = loadJSONFromAsset("elements.json");
             JSONParse(json);
-            addItems();
         }
+        addItems();
+
         namedGeofences = new ArrayList<>();
         mGeofenceList = new ArrayList<>();
         gson = new Gson();
@@ -109,23 +108,43 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         populateGeofenceList();
 
         buildGoogleApiClient(); //Callback addGeofences()
+
+        //DEBUG
+        //new RuleExecutionModule(getApplicationContext()).sendInputToEye("input","tono");
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.deleteAllRules:
+                db.deleteAllRules();
+                addItems();
+                return true;
+            case R.id.deleteAllGeofences:
+                removeGeofences();
+            case R.id.listGeofences:
+                Intent i = new Intent(this,ListGeofencesActivity.class);
+                startActivity(i);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     public void addItems() {
+        Log.i("Rules Items", "Adding items");
         items.clear();
         rules = db.getAllRules();
         for (Rule r : rules) {
             items.add(r);
+            Log.i("Rules Items", r.getRuleName());
         }
         mAdapter = new MyRecyclerViewAdapter(this, items);
         mRecyclerView.setAdapter(mAdapter);
@@ -251,13 +270,6 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
     protected void onResume() {
         super.onResume();
         addItems();
-
-        int googlePlayServicesCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        Log.i(SecondActivity.class.getSimpleName(), "googlePlayServicesCode = " + googlePlayServicesCode);
-
-        if (googlePlayServicesCode == 1 || googlePlayServicesCode == 2 || googlePlayServicesCode == 3) {
-            GooglePlayServicesUtil.getErrorDialog(googlePlayServicesCode, this, 0).show();
-        }
     }
 
     //Geofences
@@ -284,7 +296,7 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
             mGeofenceList.add(new Geofence.Builder()
                     // Set the request ID of the geofence. This is a string to identify this
                     // geofence.
-                    .setRequestId(ng.id)
+                    .setRequestId(ng.name)
 
                             // Set the circular region of this geofence.
                     .setCircularRegion(
@@ -320,6 +332,24 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
                     // A pending intent that that is reused when calling removeGeofences(). This
                     // pending intent is used to generate an intent when a matched geofence
                     // transition is observed.
+                    getGeofencePendingIntent()
+            ).setResultCallback(this); // Result processed in onResult().
+        } catch (SecurityException securityException) {
+            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+            securityException.printStackTrace();
+        }
+    }
+
+    public void removeGeofences() {
+        if (!mGoogleApiClient.isConnected()) {
+            //Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            // Remove geofences.
+            LocationServices.GeofencingApi.removeGeofences(
+                    mGoogleApiClient,
+                    // This is the same pending intent that was used in addGeofences().
                     getGeofencePendingIntent()
             ).setResultCallback(this); // Result processed in onResult().
         } catch (SecurityException securityException) {
@@ -367,7 +397,9 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Connected to GoogleApiClient");
-        addGeofences();
+        if(namedGeofences.size()>0){
+            addGeofences();
+        }
     }
 
     @Override

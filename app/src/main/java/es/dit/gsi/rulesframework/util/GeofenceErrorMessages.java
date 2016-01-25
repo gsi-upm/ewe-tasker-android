@@ -1,4 +1,4 @@
-package es.dit.gsi.rulesframework.geofences;
+package es.dit.gsi.rulesframework.util;
 
 import android.content.Context;
 import android.content.res.Resources;

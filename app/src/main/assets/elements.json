@@ -13,10 +13,6 @@
         "2":{
           "name":"OFF",
           "type":"boolean"
-        },
-        "3":{
-          "name":"Device Found",
-          "type":"String"
         }
       }
     },
@@ -101,10 +97,6 @@
         "2":{
           "name":"OFF",
           "type":"boolean"
-        },
-        "3":{
-          "name":"Speed",
-          "type":"Integer"
         }
       }
     },
@@ -125,30 +117,34 @@
       }
     },
     "8":{
-      "Name": "Silent mode",
+      "Name": "Audio",
       "Type": "Conexion",
       "ResourceId":"",
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "name":"ON",
+          "name":"Silent",
           "type":"boolean"
         },
         "2":{
-          "name":"OFF",
+          "name":"Normal",
+          "type":"boolean"
+        },
+        "3":{
+          "name":"Vibrate",
           "type":"boolean"
         }
       }
     },
     "9":{
-      "Name": "SMS",
+      "Name": "Calendar",
       "Type": "Conexion",
       "ResourceId":"",
       "ReceiverName":"",
       "Actions":{
         "1":{
-          "name":"Received",
-          "type":"Integer"
+          "name":"Event Reminded",
+          "type":"boolean"
         }
       }
     },

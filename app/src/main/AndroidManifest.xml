@@ -5,14 +5,22 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <!--Bluetooth permissions-->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!--Wifi permissions-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!--Calendar permissions-->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <!--Geofences permissions-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
@@ -59,8 +67,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewRuleActivity"></activity>
-        <service android:name=".services.EYEService" android:enabled="true"/>
-        <service android:name=".services.GeofenceIntentService"/>
+        <activity android:name=".ListGeofencesActivity"/>
+        <service android:name=".services.RuleDefinitionModule" android:enabled="true"/>
+        <service android:name=".receivers.GeofenceIntentService" android:enabled="true"/>
 
     </application>
 

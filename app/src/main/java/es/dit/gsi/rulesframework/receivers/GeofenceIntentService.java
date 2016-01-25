@@ -1,32 +1,27 @@
-package es.dit.gsi.rulesframework.services;
+package es.dit.gsi.rulesframework.receivers;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import es.dit.gsi.rulesframework.R;
+import es.dit.gsi.rulesframework.RuleExecutionModule;
 import es.dit.gsi.rulesframework.SecondActivity;
-import es.dit.gsi.rulesframework.geofences.GeofenceErrorMessages;
-import es.dit.gsi.rulesframework.model.NamedGeofence;
+import es.dit.gsi.rulesframework.util.GeofenceErrorMessages;
 
 /**
  * Created by afernandez on 21/01/16.
@@ -84,6 +79,12 @@ public class GeofenceIntentService extends IntentService {
             // Send notification and log the transition details.
             sendNotification(geofenceTransitionDetails);
             Log.i(TAG, geofenceTransitionDetails);
+
+            //TODO:POST Geofence info to server
+            //DEBUG
+            if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+                new RuleExecutionModule(getApplicationContext()).sendInputToEye("GSI", "mobile");
+            }
         } else {
             // Log the error.
             Log.e(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
