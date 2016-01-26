@@ -26,22 +26,15 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
-import es.dit.gsi.rulesframework.model.DoAction;
-import es.dit.gsi.rulesframework.model.DoElement;
-import es.dit.gsi.rulesframework.model.IfAction;
-import es.dit.gsi.rulesframework.model.IfElement;
 import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.receivers.GeofenceIntentService;
@@ -58,10 +51,6 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
-    public String json;
-    public static List<IfElement> ifElementsList = new ArrayList();
-    public static List<DoElement> doElementsList = new ArrayList();
 
     //SQL
     RulesSQLiteHelper db;
@@ -80,6 +69,9 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rules_activity);
 
+        //ActionBar
+        getSupportActionBar().setTitle("List of Rules");
+
         //RecyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.listRules);
         mRecyclerView.setHasFixedSize(true);
@@ -91,12 +83,6 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
 
         db = new RulesSQLiteHelper(this);
 
-        if (ifElementsList.size() > 0) {
-            ifElementsList.clear();
-        } else {
-            json = loadJSONFromAsset("elements.json");
-            JSONParse(json);
-        }
         addItems();
 
         namedGeofences = new ArrayList<>();
@@ -182,7 +168,7 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     //Read JSON
-    public void JSONParse(String json) {
+    /*public void JSONParse(String json) {
 
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -248,7 +234,7 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -423,4 +409,5 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
             Log.e(TAG, errorMessage);
         }
     }
+
 }

@@ -23,8 +23,9 @@ import es.dit.gsi.rulesframework.model.Rule;
  */
 public class Tasks {
 
-    private static final String urlRulesApi = "http://138.4.3.211/server/tfgfinal/rulescreator.php";
+    private static final String urlRulesApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
     private static final String urlInputApi = "http://138.4.3.211/server/tfgfinal/inputinserter.php";
+    private static final String urlGetChannelApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
 
@@ -38,13 +39,18 @@ public class Tasks {
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-            params.add(new BasicNameValuePair("title", mRule.getRuleName()));
-            params.add(new BasicNameValuePair("channel", mRule.getIfElement()));
-            params.add(new BasicNameValuePair("event", mRule.getIfAction()));
-            params.add(new BasicNameValuePair("action", mRule.getDoElement()));
-            params.add(new BasicNameValuePair("place", "TonoMovil"));
+            //Parameters
+            params.add(new BasicNameValuePair("rule_title", mRule.getRuleName()));
+            params.add(new BasicNameValuePair("rule_description", mRule.getDescription()));
+            params.add(new BasicNameValuePair("rule_channel_one", mRule.getIfElement()));
+            params.add(new BasicNameValuePair("rule_channel_two", mRule.getDoElement()));
+            params.add(new BasicNameValuePair("rule_event_title", mRule.getIfAction()));
+            params.add(new BasicNameValuePair("rule_action_title",mRule.getDoAction()));
+            params.add(new BasicNameValuePair("rule_place", mRule.getPlace()));
+            params.add(new BasicNameValuePair("rule_creator", "Smartphone"));
             params.add(new BasicNameValuePair("rule", mRule.getEyeRule()));//EYE rule with prefix
-            params.add(new BasicNameValuePair("command", "create"));
+            params.add(new BasicNameValuePair("command", "createRule"));
+
 
             String response = "";
             try {
@@ -95,12 +101,40 @@ public class Tasks {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return response;        }
+            return response;
+        }
 
         @Override
         protected void onPostExecute(String response) {
             Log.i("SERVER", "Response input: " + response);
 
+        }
+    }
+
+    public static class GetChannelsFromServerTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... par) {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(urlGetChannelApi);
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            params.add(new BasicNameValuePair("command", "getChannels"));
+
+            String response = "";
+            try {
+                post.setEntity(new UrlEncodedFormEntity(params));
+
+                HttpResponse resp = null;
+                resp = client.execute(post);
+
+                HttpEntity ent = resp.getEntity();
+                response = EntityUtils.toString(ent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
         }
     }
 }

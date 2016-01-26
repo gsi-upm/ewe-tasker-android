@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
-import es.dit.gsi.rulesframework.model.IfAction;
+import es.dit.gsi.rulesframework.model.Channel;
+import es.dit.gsi.rulesframework.model.Event;
 
 /**
  * Created by afernandez on 1/12/15.
@@ -29,13 +30,14 @@ public class IfActionFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     Context context;
-    List<IfAction > listActions = new ArrayList();
+
+    String channelSelected;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.actions_fragment,container,false);
-        listActions = getArguments().getParcelableArrayList("actions");
-        Log.i("PARCELABLE", listActions.get(0).getName());
+        View rootView = inflater.inflate(R.layout.actions_fragment, container, false);
+        channelSelected = getArguments().getString("channelSelected");
 
 
         //RecyclerView
@@ -51,8 +53,13 @@ public class IfActionFragment extends Fragment {
     }
 
     public void addIfActionsToLayout(){
-        for(IfAction iA : listActions){
-            items.add(iA);
+        for(Channel ch : NewRuleActivity.channelList){
+            if(ch.title.equals(channelSelected)){
+                List<Event> events = ch.events;
+                for(Event e : events){
+                    items.add(e);
+                }
+            }
         }
         mAdapter = new MyRecyclerViewAdapter(context,items,getParentFragment());
         mRecyclerView.setAdapter(mAdapter);

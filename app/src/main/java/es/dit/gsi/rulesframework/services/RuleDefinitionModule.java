@@ -7,7 +7,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import es.dit.gsi.rulesframework.RuleExecutionModule;
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.util.Tasks;
@@ -20,10 +19,14 @@ public class RuleDefinitionModule extends Service {
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
 
-    private String canal = "";
+    private String ruleName= "";
+    private String place= "";
+    private String description = "";
+
+    private String canalIf = "";
     private String action = "";
     private String evento = "";
-    private String eventoAction = "";
+    private String canalDo = "";
 
     private Object ifParameter = "";
     private  Object doParameter = "";
@@ -58,8 +61,8 @@ public class RuleDefinitionModule extends Service {
      * method for clients
      */
     //GETTERS
-    public String getCanal() {
-        return canal;
+    public String getIfChannel() {
+        return canalIf;
     }
 
     public String getAction() {
@@ -70,26 +73,26 @@ public class RuleDefinitionModule extends Service {
         return evento;
     }
 
-    public String getEventoAction() {
-        return eventoAction;
+    public String getDoChannel() {
+        return canalDo;
     }
 
     //SETTERS
-    public void setCanal(String ifElement) {
+    public void setIfChannel(String ifElement) {
         Log.i("RuleDefinitionModule", "Channel: " + ifElement);
-        canal = ifElement;
+        canalIf = ifElement;
     }
 
-    public void setAction(String ifAction) {
-        action = ifAction;
+    public void setEvento(String ifAction) {
+        evento = ifAction;
     }
 
-    public void setEvento(String doElement) {
-        evento = doElement;
+    public void setDoChannel(String doElement) {
+        canalDo = doElement;
     }
 
-    public void setEventoAction(String doAction) {
-        eventoAction = doAction;
+    public void setAction(String doAction) {
+        action = doAction;
     }
 
     public Object getDoParameter() {
@@ -108,9 +111,33 @@ public class RuleDefinitionModule extends Service {
         this.ifParameter = ifParameter;
     }
 
+    public String getRuleName() {
+        return ruleName;
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /*************SERVER FUNCTIONS****************/
     public void postRuleInServer() {
-        new Tasks.PostRuleToServerTask().execute(new Rule("name",getCanal(),getAction(),getEvento(),getEventoAction(),getIfParameter(),getDoParameter()));
+        new Tasks.PostRuleToServerTask().execute(new Rule(getRuleName(), getIfChannel(),getEvento(),getDoChannel(),getAction(),getIfParameter(),getDoParameter(), getPlace(),getDescription()));
     }
 
     public void deleteRuleInServer() {
@@ -120,18 +147,19 @@ public class RuleDefinitionModule extends Service {
 
     //LOCAL
     public void saveRuleInLocal(Context context) {
-        Rule mRule = new Rule("name",getCanal(),getAction(),getEvento(),getEventoAction(),getIfParameter(),getDoParameter());
+        Rule mRule = new Rule(getRuleName(), getIfChannel(),getEvento(),getDoChannel(), getAction(),getIfParameter(),getDoParameter(), getPlace(),getDescription());
         RulesSQLiteHelper db = new RulesSQLiteHelper(this);
         db.addRule(mRule);
         Log.i("LOCAL", "Rule saved");
-        Log.i("RuleSavedInfo", "Name: " + mRule.getRuleName());
-        Log.i("RuleSavedInfo", "ifElement: " + mRule.getIfElement());
-        Log.i("RuleSavedInfo", "ifAction: " + mRule.getIfAction());
-        Log.i("RuleSavedInfo", "ifParameter: " + mRule.getIfParameter());
-        Log.i("RuleSavedInfo", "doElement: " + mRule.getDoElement());
-        Log.i("RuleSavedInfo", "doAction: " + mRule.getDoAction());
-        Log.i("RuleSavedInfo", "doParameter: " + mRule.getDoParameter());
+    }
 
+    public void resetService(){
+        this.canalIf = "";
+        this.canalDo="";
+        this.evento = "";
+        this.action="";
+        this.ifParameter="";
+        this.doParameter="";
     }
 
     //DEBUG

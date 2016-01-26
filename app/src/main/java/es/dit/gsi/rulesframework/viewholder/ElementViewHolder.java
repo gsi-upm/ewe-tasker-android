@@ -12,11 +12,12 @@ import es.dit.gsi.rulesframework.R;
  * Created by afernandez on 4/12/15.
  */
 public class ElementViewHolder extends RecyclerView.ViewHolder{
+    public ImageView icon;
     public TextView name;
     public LinearLayout layoutClickable;
     public ElementViewHolder(View itemView) {
         super(itemView);
-        //logoRule = (ImageView) itemView.findViewById(R.id.logoRule);
+        icon = (ImageView) itemView.findViewById(R.id.icon);
         name = (TextView) itemView.findViewById(R.id.nameElement);
         layoutClickable = (LinearLayout) itemView.findViewById(R.id.layoutClickable);
         //descriptionRule = (TextView) itemView.findViewById(R.id.descriptionRule);

@@ -1,14 +1,19 @@
 package es.dit.gsi.rulesframework.model;
 
+import java.util.List;
+
+import es.dit.gsi.rulesframework.NewRuleActivity;
+
 /**
  * Created by afernandez on 23/10/15.
  */
 public class Rule{
-    public static String prefix = "@prefix ppl: <http://example.org/people#>. " +
-            "@prefix foaf: <http://xmlns.com/foaf/0.1/>. ";
 
     private int id;
     private String ruleName;
+    private String place;
+    private String description;
+
     private String ifElement;
     private String ifAction;
 
@@ -82,7 +87,23 @@ public class Rule{
         this.doParameter = doParameter;
     }
 
-    public Rule(String ruleName, String ifElement, String ifAction, String doElement, String doAction,Object ifParameter, Object doParameter) {
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Rule(String ruleName, String ifElement, String ifAction, String doElement, String doAction,Object ifParameter, Object doParameter,String place, String description) {
         this.ruleName = ruleName;
 
         this.ifElement = ifElement;
@@ -91,21 +112,79 @@ public class Rule{
         this.doElement = doElement;
         this.ifParameter = ifParameter;
         this.doParameter = doParameter;
+        this.ruleName = ruleName;
+        this.place = place;
+        this.description = description;
     }
     public Rule (){}
     public String getFullRule(){
         return "IF " + ifElement + " " + ifAction + " -> DO " + doElement + " " + doAction + "\n";
     }
     public String getEyeRule(){
+        String prefixChannelOne = "", prefixChannelTwo = "", eventRule = "", actionRule = "";
+        List<Channel> channelList = NewRuleActivity.channelList;
 
-        String ifStatement = "{ppl:" + ifElement + " foaf:knows " + "ppl:" + ifAction + "}=> ";
-        String doStatement = "{ppl:" + doElement + " foaf:knows " + "ppl:" + doAction + "}.";
+        //PREFIX
+        for (int i = 0; i<channelList.size();i++) {
+            String titleChannel = channelList.get(i).title;
+            if (titleChannel.equals(ifElement)) {
+                for (Event e : channelList.get(i).events) {
+                    prefixChannelOne = e.prefix;
+                    eventRule = e.rule;
+                }
+            }
+            if(titleChannel.equals(doElement)){
+                for (Action a : channelList.get(i).actions) {
+                    prefixChannelTwo = a.prefix;
+                    actionRule = a.rule;
+                }
+            }
+        }
+        String prefix = prefixChannelOne + " "  +prefixChannelTwo;
+
+        changeParameterOnRule(eventRule,"event");
+        changeParameterOnRule(actionRule, "action");
+
+        String ifStatement = "{" + eventRule + "}=> ";
+        String doStatement = "{" + actionRule + "}.";
 
         return prefix+ifStatement+doStatement;
     }
 
-    public static String getInput(String ifElement, String ifAction){
-        String input = "ppl:" + ifElement + " foaf:knows " + "ppl:" + ifAction + ".";
-        return prefix + input;
+    public String changeParameterOnRule(String rule,String type){
+        String ruleReplaced = "";
+        //1. Get de nParams of the event
+        int nParamsEvent= 0;
+        for(Channel ch: NewRuleActivity.channelList){
+            if(ch.title.equals(ifElement)){
+                for(Event e: ch.events){
+                    if(e.title.equals(ifAction)){
+                        nParamsEvent = Integer.parseInt(e.numParameters);
+                    }
+                }
+            }
+        }
+
+        int nParamsAction= 0;
+        for(Channel ch: NewRuleActivity.channelList){
+            if(ch.title.equals(doElement)){
+                for(Action a: ch.actions){
+                    if(a.title.equals(doAction)){
+                        nParamsAction = Integer.parseInt(a.numParameters);
+                    }
+                }
+            }
+        }
+        if(type.equals("event")){
+            for(int i = 1; i<nParamsEvent;i++){
+                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) ifParameter);
+            }
+        }
+        if(type.equals("action")){
+            for(int i = 1; i<nParamsAction;i++){
+                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) doParameter);
+            }
+        }
+        return ruleReplaced;
     }
 }

@@ -10,16 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
-import es.dit.gsi.rulesframework.SecondActivity;
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
-import es.dit.gsi.rulesframework.model.DoElement;
-import es.dit.gsi.rulesframework.model.IfElement;
+import es.dit.gsi.rulesframework.model.Channel;
 
 /**
  * Created by afernandez on 1/12/15.
@@ -55,11 +53,11 @@ public class DoElementsFragment extends Fragment {
     }
 
     public void addDoElementsToLayout(){
-        for(DoElement dE : SecondActivity.doElementsList){
-            items.add(dE);
-            Log.i("ADD ITEMS: ", dE.getName());
-            Log.i("ADD ITEMS: ",dE.getActions().get(0).getName());
-
+        for(Channel channel : NewRuleActivity.channelList){
+            if(channel.hasActions()){
+                items.add(channel);
+                Log.i("ADD ITEMS: ", channel.title);
+            }
         }
         mAdapter = new MyRecyclerViewAdapter(context,items,getParentFragment());
         mRecyclerView.setAdapter(mAdapter);    }
