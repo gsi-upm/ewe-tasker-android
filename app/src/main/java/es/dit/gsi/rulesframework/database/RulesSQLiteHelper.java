@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import es.dit.gsi.rulesframework.model.Rule;
 public class RulesSQLiteHelper extends SQLiteOpenHelper {
 
     //Sentencia SQL para crear la tabla de Usuarios
-    String sqlCreate = "CREATE TABLE Rules (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, ifElement TEXT, ifAction TEXT, doElement TEXT, doAction TEXT,ifParameter TEXT, doParameter TEXT)";
+    String sqlCreate = "CREATE TABLE Rules (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, ifElement TEXT, ifAction TEXT, doElement TEXT, doAction TEXT,ifParameter TEXT, doParameter TEXT, description TEXT, place TEXT)";
     private static final String DATABASE_NAME = "Rules";
     private static final int DATABASE_VERSION = 1;
 
@@ -59,8 +61,13 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
         values.put("ifAction", rule.getIfAction());
         values.put("doElement", rule.getDoElement());
         values.put("doAction", rule.getDoAction());
-        values.put("ifParameter", (String) rule.getIfParameter());
-        values.put("doParameter", (String) rule.getDoParameter());
+        values.put("ifParameter", convertArrayToString(rule.getIfParameter().toArray(new String[rule.getIfParameter().size()])));
+        Log.i("SQLite", convertArrayToString(rule.getIfParameter().toArray(new String[rule.getIfParameter().size()])));
+        values.put("doParameter", convertArrayToString(rule.getDoParameter().toArray(new String[rule.getDoParameter().size()])));
+        Log.i("SQLite", convertArrayToString(rule.getDoParameter().toArray(new String[rule.getDoParameter().size()])));
+        values.put("description", rule.getDescription());
+        values.put("place", rule.getPlace());
+
 
 
 
@@ -71,6 +78,24 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
 
         // 4. close
         db.close();
+    }
+
+    public static String strSeparator = "__,__";
+    public static String convertArrayToString(String[] array){
+        String str = "";
+        for (int i = 0;i<array.length; i++) {
+            str = str+array[i];
+            // Do not append comma at the end of last element
+            if(i<array.length-1){
+                str = str+strSeparator;
+            }
+        }
+        return str;
+    }
+    public static List<String> convertStringToList(String str){
+        String[] arr = str.split(strSeparator);
+        Arrays.asList(arr);
+        return Arrays.asList(arr);
     }
 
     public List<Rule> getAllRules(){
@@ -93,8 +118,10 @@ public class RulesSQLiteHelper extends SQLiteOpenHelper {
                 rule.setIfAction(cursor.getString(3));
                 rule.setDoElement(cursor.getString(4));
                 rule.setDoAction(cursor.getString(5));
-                rule.setIfParameter(cursor.getString(6));
-                rule.setDoParameter(cursor.getString(7));
+                rule.setIfParameter(convertStringToList(cursor.getString(6)));
+                rule.setDoParameter(convertStringToList(cursor.getString(7)));
+                rule.setDescription(cursor.getString(8));
+                rule.setPlace(cursor.getString(9));
 
                 list.add(rule);
             } while (cursor.moveToNext());

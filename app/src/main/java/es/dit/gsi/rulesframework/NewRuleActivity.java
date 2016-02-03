@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,8 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,6 +96,18 @@ public class NewRuleActivity extends AppCompatActivity{
         //Hago que no sea clickable para que no cargue un navegador vacio
         tabHost.getTabWidget().getChildTabViewAt(ID_FRAGMENT_DO).setEnabled(false);
 
+        //Tab color
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+            View v = tabHost.getTabWidget().getChildAt(i);
+            if(v.isSelected()){
+                v.setBackgroundColor(getResources().getColor(R.color.blueDesc));
+            }else{
+                v.setBackgroundColor(getResources().getColor(R.color.grey));
+            }
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            tv.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "century-gothic-bold.ttf"));
+            tv.setTextColor(getResources().getColor(R.color.white));
+        }
         //DB
         db =  new RulesSQLiteHelper(this);
 

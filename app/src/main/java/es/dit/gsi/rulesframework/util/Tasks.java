@@ -23,9 +23,13 @@ import es.dit.gsi.rulesframework.model.Rule;
  */
 public class Tasks {
 
-    private static final String urlRulesApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
-    private static final String urlInputApi = "http://138.4.3.211/server/tfgfinal/inputinserter.php";
-    private static final String urlGetChannelApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
+    //private static final String urlRulesApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
+    //private static final String urlInputApi = "http://138.4.3.211/server/tfgfinal/inputinserter.php";
+    //private static final String urlGetChannelApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
+
+    private static final String urlRulesApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
+    private static final String urlInputApi = "http://taskautomationserver.ddns.net/taskautomationweb//inputinserter.php";
+    private static final String urlGetChannelApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
 

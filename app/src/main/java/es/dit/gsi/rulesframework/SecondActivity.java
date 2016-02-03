@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,6 +27,8 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +55,8 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    TextView emptyView;
 
     //SQL
     RulesSQLiteHelper db;
@@ -82,6 +88,10 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         floatingActionButton.setOnClickListener(new OnFloatingButtonClickListener());
 
         db = new RulesSQLiteHelper(this);
+
+        //Empty message
+        emptyView = (TextView) findViewById(R.id.empty_view);
+        emptyView.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "Titillium-Regular.otf"));
 
         addItems();
 
@@ -134,6 +144,15 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         }
         mAdapter = new MyRecyclerViewAdapter(this, items);
         mRecyclerView.setAdapter(mAdapter);
+
+        if(items.size()==0){
+            mRecyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
 

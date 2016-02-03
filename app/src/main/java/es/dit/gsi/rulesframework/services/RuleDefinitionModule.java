@@ -7,6 +7,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.util.Tasks;
@@ -28,8 +31,8 @@ public class RuleDefinitionModule extends Service {
     private String evento = "";
     private String canalDo = "";
 
-    private Object ifParameter = "";
-    private  Object doParameter = "";
+    private List<String> ifParameter = new ArrayList<>();
+    private List<String> doParameter = new ArrayList<>();
 
     private String input = "";
     /**
@@ -95,19 +98,19 @@ public class RuleDefinitionModule extends Service {
         action = doAction;
     }
 
-    public Object getDoParameter() {
+    public List<String> getDoParameter() {
         return doParameter;
     }
 
-    public void setDoParameter(Object doParameter) {
+    public void setDoParameter(List<String> doParameter) {
         this.doParameter = doParameter;
     }
 
-    public Object getIfParameter() {
+    public List<String> getIfParameter() {
         return ifParameter;
     }
 
-    public void setIfParameter(Object ifParameter) {
+    public void setIfParameter(List<String> ifParameter) {
         this.ifParameter = ifParameter;
     }
 
@@ -135,6 +138,14 @@ public class RuleDefinitionModule extends Service {
         this.description = description;
     }
 
+    public void addDoParameter(String doParam){
+        this.doParameter.add(doParam);
+    }
+
+    public void addIfParameter(String ifParam){
+        this.ifParameter.add(ifParam);
+    }
+
     /*************SERVER FUNCTIONS****************/
     public void postRuleInServer() {
         new Tasks.PostRuleToServerTask().execute(new Rule(getRuleName(), getIfChannel(),getEvento(),getDoChannel(),getAction(),getIfParameter(),getDoParameter(), getPlace(),getDescription()));
@@ -158,8 +169,8 @@ public class RuleDefinitionModule extends Service {
         this.canalDo="";
         this.evento = "";
         this.action="";
-        this.ifParameter="";
-        this.doParameter="";
+        this.ifParameter=new ArrayList<>();
+        this.doParameter=new ArrayList<>();
     }
 
     //DEBUG

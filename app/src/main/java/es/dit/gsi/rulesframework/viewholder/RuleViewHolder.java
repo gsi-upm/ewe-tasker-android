@@ -12,13 +12,15 @@ import es.dit.gsi.rulesframework.R;
  */
 public class RuleViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageView logoRule;
-    public TextView ifElement,descriptionRule;
+    public ImageView ifChannel,doChannel;
+    public TextView ifElement,doElement,descriptionRule;
 
     public RuleViewHolder(View itemView) {
         super(itemView);
-        logoRule = (ImageView) itemView.findViewById(R.id.logoRule);
+        ifChannel = (ImageView) itemView.findViewById(R.id.ifChannel);
+        doChannel = (ImageView) itemView.findViewById(R.id.doChannel);
         ifElement = (TextView) itemView.findViewById(R.id.ifElement);
+        doElement = (TextView) itemView.findViewById(R.id.doElement);
         descriptionRule = (TextView) itemView.findViewById(R.id.descriptionRule);
     }
 }

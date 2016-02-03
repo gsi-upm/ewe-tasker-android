@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
@@ -157,17 +159,24 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void configureRuleViewholder(RuleViewHolder vh, int position){
-        Log.i("Rules","Configure Rule ViewHolder");
+        Log.i("Rules", "Configure Rule ViewHolder");
         Rule mRule = (Rule) items.get(position);
 
-        vh.ifElement.setText(mRule.getRuleName());
-        vh.descriptionRule.setText(mRule.getFullRule());
+        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+mRule.getIfElement()+".png").resize(170, 170).into(vh.ifChannel);
+        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+mRule.getDoElement()+".png").resize(170,170).into(vh.doChannel);
+
+        vh.ifElement.setTypeface(Typeface.createFromAsset(context.getAssets(), "century-gothic-bold.ttf"));
+        vh.doElement.setTypeface(Typeface.createFromAsset(context.getAssets(), "century-gothic-bold.ttf"));
+        vh.descriptionRule.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+        vh.descriptionRule.setText(mRule.getDescription());
     }
 
     public void configureIfElementViewHolder(ElementViewHolder vh, final int position){
         final Channel ch = (Channel) items.get(position);
         vh.name.setText(ch.title);
-        Picasso.with(context).load("http://138.4.3.211/taskautomationweb/img/"+ch.title+".png").resize(256,256).into(vh.icon);
+        vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+
+        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+ch.title+".png").resize(200,200).into(vh.icon);
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +198,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void configureIfActionViewHolder(final ActionViewHolder vh,final int position){
         Event event = (Event) items.get(position);
         vh.name.setText(event.title);
-        Picasso.with(context).load("http://138.4.3.211/taskautomationweb/img/arrow.png").resize(256,256).into(vh.icon);
+        vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+
+        Picasso.with(context).load(R.drawable.arrow_right).resize(200,200).into(vh.icon);
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,7 +254,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     editor.putString(geofence.id, json);
                                     editor.apply();
 
-                                    NewRuleActivity.mService.setIfParameter(geofence.name);
+                                    //NewRuleActivity.mService.setIfParameter(geofence.name);
                                     changeToDoTab();
                                 }
                             });
@@ -271,13 +282,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             alert.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //EditText stringField = (EditText) layout.findViewById(R.id.parameter);
                                     for(int i = 1; i<=Integer.parseInt(event.numParameters);i++){
                                         EditText et = (EditText) layout.findViewById(1+i);
                                         Log.i("TEST ALERT",et.getText().toString());
+                                        //Save parameter
+                                        NewRuleActivity.mService.addIfParameter(et.getText().toString());
                                     }
                                     //Save parameter
-                                    //NewRuleActivity.mService.setIfParameter(et.getText().toString());
                                     changeToDoTab();
                                 }
                             });
@@ -294,6 +305,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 NewRuleActivity.tabHost.getTabWidget().getChildTabViewAt(0).setEnabled(false);
                 NewRuleActivity.tabHost.getTabWidget().getChildTabViewAt(1).setEnabled(true);
                 NewRuleActivity.tabHost.setCurrentTab(1);
+
+                //Tab color
+                for (int i = 0; i < NewRuleActivity.tabHost.getTabWidget().getChildCount(); i++) {
+                    View v = NewRuleActivity.tabHost.getTabWidget().getChildAt(i);
+                    if(v.isSelected()){
+                        v.setBackgroundColor(context.getResources().getColor(R.color.blueDesc));
+                    }else{
+                        v.setBackgroundColor(context.getResources().getColor(R.color.grey));
+                    }
+                    TextView tv = (TextView) NewRuleActivity.tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+                    tv.setTypeface(Typeface.createFromAsset(context.getAssets(), "century-gothic-bold.ttf"));
+                    tv.setTextColor(context.getResources().getColor(R.color.white));
+                }
             }
         });
     }
@@ -301,7 +325,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void configureDoElementViewHolder(ElementViewHolder vh,final int position){
         Channel channel = (Channel) items.get(position);
         vh.name.setText(channel.title);
-        Picasso.with(context).load("http://138.4.3.211/taskautomationweb/img/"+channel.title+".png").resize(256,256).into(vh.icon);
+        vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+
+        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+channel.title+".png").resize(200,200).into(vh.icon);
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,27 +348,44 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void configureDoActionViewHolder (ActionViewHolder vh,final int position){
         Action action = (Action) items.get(position);
         NewRuleActivity.mService.setAction(action.title);
-        Picasso.with(context).load("http://138.4.3.211/taskautomationweb/img/arrow.png").resize(256,256).into(vh.icon);
+        Picasso.with(context).load(R.drawable.arrow_right).resize(200,200).into(vh.icon);
         vh.name.setText(action.title);
+        vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Optional set parameter on bundle
-                Action action = (Action) items.get(position);
+                final Action action = (Action) items.get(position);
                 LayoutInflater inflater = LayoutInflater.from(context);
                 if (action.hasParameters()) {
                     //Request String parameter
                     final AlertDialog.Builder alert = new AlertDialog.Builder(context);
                     //this is what I did to added the layout to the alert dialog
-                    final View layout = inflater.inflate(R.layout.set_parameter, null);
+                    final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.set_parameter, null);
+
+
+                    int i = 1;
+                    while(i<=Integer.parseInt(action.numParameters)){
+                        EditText editText = new EditText(context);
+                        editText.setLayoutParams(new ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.FILL_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT));
+                        editText.setId(1+i);
+                        layout.addView(editText);
+                        i++;
+                    }
 
                     alert.setView(layout);
                     alert.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //EditText stringField = (EditText) layout.findViewById(R.id.parameter);
+                            for(int i = 1; i<=Integer.parseInt(action.numParameters);i++){
+                                EditText et = (EditText) layout.findViewById(1+i);
+                                Log.i("TEST ALERT",et.getText().toString());
+                                NewRuleActivity.mService.addDoParameter(et.getText().toString());
+                            }
                             //Save parameter
-                            //NewRuleActivity.mService.setDoParameter(stringField.getText().toString());
                             setRuleNameAndPlace();
                         }
                     });
@@ -370,6 +413,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 final AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 //this is what I did to added the layout to the alert dialog
                 final View layout = inflater.inflate(R.layout.set_rulename, null);
+
+                TextView nameTv = (TextView) layout.findViewById(R.id.nametv);
+                TextView descTv = (TextView) layout.findViewById(R.id.desctv);
+                TextView placeTv = (TextView) layout.findViewById(R.id.placetv);
+                nameTv.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+                descTv.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+                placeTv.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
+
                 alert.setView(layout);
                 alert.setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
                     @Override

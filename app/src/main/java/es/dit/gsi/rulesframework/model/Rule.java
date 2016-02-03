@@ -1,5 +1,6 @@
 package es.dit.gsi.rulesframework.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.NewRuleActivity;
@@ -20,8 +21,8 @@ public class Rule{
     private String doElement;
     private String doAction;
 
-    private Object ifParameter;
-    private Object doParameter;
+    private List<String> ifParameter = new ArrayList<>();
+    private List<String> doParameter = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -71,19 +72,19 @@ public class Rule{
         this.ruleName = ruleName;
     }
 
-    public Object getIfParameter() {
+    public List<String> getIfParameter() {
         return ifParameter;
     }
 
-    public void setIfParameter(Object ifParameter) {
+    public void setIfParameter(List<String> ifParameter) {
         this.ifParameter = ifParameter;
     }
 
-    public Object getDoParameter() {
+    public List<String> getDoParameter() {
         return doParameter;
     }
 
-    public void setDoParameter(Object doParameter) {
+    public void setDoParameter(List<String> doParameter) {
         this.doParameter = doParameter;
     }
 
@@ -103,7 +104,7 @@ public class Rule{
         this.description = description;
     }
 
-    public Rule(String ruleName, String ifElement, String ifAction, String doElement, String doAction,Object ifParameter, Object doParameter,String place, String description) {
+    public Rule(String ruleName, String ifElement, String ifAction, String doElement, String doAction,List<String> ifParameter, List<String> doParameter,String place, String description) {
         this.ruleName = ruleName;
 
         this.ifElement = ifElement;
@@ -177,12 +178,12 @@ public class Rule{
         }
         if(type.equals("event")){
             for(int i = 1; i<nParamsEvent;i++){
-                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) ifParameter);
+                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) ifParameter.get(i));
             }
         }
         if(type.equals("action")){
             for(int i = 1; i<nParamsAction;i++){
-                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) doParameter);
+                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) doParameter.get(i));
             }
         }
         return ruleReplaced;
