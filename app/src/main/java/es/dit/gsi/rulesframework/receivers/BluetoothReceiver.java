@@ -14,7 +14,8 @@ import es.dit.gsi.rulesframework.RuleExecutionModule;
 public class BluetoothReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-            String channel="";
+            String user="afll";
+            String channel="Bluetooth";
             String input = "";
 
             final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
@@ -24,8 +25,8 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 case BluetoothAdapter.STATE_OFF:
                     //"Bluetooth off"
                     Log.i("RULESFW", "Bluetooth OFF");
-                    input = generateInput("ON");
-                    ruleExecutionModule.sendInputToEye(input,channel);
+                    input = ruleExecutionModule.generateInput(channel,"Turn OFF");
+                    ruleExecutionModule.sendInputToEye(input,user);
                     break;
                 case BluetoothAdapter.STATE_TURNING_OFF:
                     //"Turning Bluetooth off..."
@@ -34,25 +35,12 @@ public class BluetoothReceiver extends BroadcastReceiver {
                     //"Bluetooth on"
                     Log.i("RULESFW", "Bluetooth ON");
                     //Send input to EYE
-                    input = generateInput("ON");
-                    ruleExecutionModule.sendInputToEye(input, channel);
+                    input = ruleExecutionModule.generateInput(channel,"Turn ON");
+                    ruleExecutionModule.sendInputToEye(input, user);
                     break;
                 case BluetoothAdapter.STATE_TURNING_ON:
                     //"Turning Bluetooth on..."
                     break;
             }
-    }
-
-    public String generateInput(String action){
-        String input = "";
-        switch (action){
-            case "ON":
-                input = "";break;
-            case "OFF":
-                input = "";break;
-
-        }
-
-        return input;
     }
 }

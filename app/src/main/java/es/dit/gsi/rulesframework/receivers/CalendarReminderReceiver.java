@@ -13,8 +13,9 @@ import es.dit.gsi.rulesframework.RuleExecutionModule;
 /**
  * Created by afernandez on 8/01/16.
  */
-public class CalendarReminderReceiver extends BroadcastReceiver
-{
+public class CalendarReminderReceiver extends BroadcastReceiver {
+    String input = "ewe-calendar:Calendar rdf:type ewe-calendar:EventStart. ewe-calendar:Calendar ewe:eventTitle \"#PARAM_1#\".";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equalsIgnoreCase(CalendarContract.ACTION_EVENT_REMINDER)){
@@ -35,12 +36,14 @@ public class CalendarReminderReceiver extends BroadcastReceiver
             String nameEventTriggered = cursor.getString(0);
             Log.i("CALENDAR", "Event triggered: " + nameEventTriggered);
 
-            //TODO:Contains keyword Meeting
-            String pattern = "Meeting";
-            if(nameEventTriggered.contains(pattern)){
-                ruleExecutionModule.sendInputToEye("Calendar","mobile");//Match pattern
+            //Replace param and send Input
+            input = input.replace("#PARAM_1#",nameEventTriggered);
+            String prefix = ruleExecutionModule.getPrefixes("Calendar","Event Start");
+            String statement = prefix + " " + input;
+            Log.i("Calendar", statement);
+            ruleExecutionModule.sendInputToEye(statement,"afll");
+
             }else{
-            }
 
         }
     }

@@ -28,7 +28,7 @@ public class Tasks {
     //private static final String urlGetChannelApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
 
     private static final String urlRulesApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
-    private static final String urlInputApi = "http://taskautomationserver.ddns.net/taskautomationweb//inputinserter.php";
+    private static final String urlInputApi = "http://taskautomationserver.ddns.net/taskautomationweb/controller/eventsManager.php";
     private static final String urlGetChannelApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
@@ -51,7 +51,7 @@ public class Tasks {
             params.add(new BasicNameValuePair("rule_event_title", mRule.getIfAction()));
             params.add(new BasicNameValuePair("rule_action_title",mRule.getDoAction()));
             params.add(new BasicNameValuePair("rule_place", mRule.getPlace()));
-            params.add(new BasicNameValuePair("rule_creator", "Smartphone"));
+            params.add(new BasicNameValuePair("rule_creator", "afll"));
             params.add(new BasicNameValuePair("rule", mRule.getEyeRule()));//EYE rule with prefix
             params.add(new BasicNameValuePair("command", "createRule"));
 
@@ -89,8 +89,8 @@ public class Tasks {
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-            params.add(new BasicNameValuePair("input", par[0]));
-            params.add(new BasicNameValuePair("place", par[1]));
+            params.add(new BasicNameValuePair("inputEvent", par[0]));
+            params.add(new BasicNameValuePair("user", par[1]));
             params.add(new BasicNameValuePair("command", "insertinput"));
 
             String response = "";

@@ -1,5 +1,7 @@
 package es.dit.gsi.rulesframework.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,31 +126,46 @@ public class Rule{
     public String getEyeRule(){
         String prefixChannelOne = "", prefixChannelTwo = "", eventRule = "", actionRule = "";
         List<Channel> channelList = NewRuleActivity.channelList;
-
+        boolean eventHasParameters = false;
+        boolean actionHasParameters = false;
         //PREFIX
         for (int i = 0; i<channelList.size();i++) {
             String titleChannel = channelList.get(i).title;
             if (titleChannel.equals(ifElement)) {
                 for (Event e : channelList.get(i).events) {
-                    prefixChannelOne = e.prefix;
-                    eventRule = e.rule;
+                    if (e.title.equals(ifAction)) {
+                        prefixChannelOne = e.prefix;
+                        eventRule = e.rule;
+                        eventHasParameters = e.hasParameters();
+                    }
                 }
             }
             if(titleChannel.equals(doElement)){
                 for (Action a : channelList.get(i).actions) {
-                    prefixChannelTwo = a.prefix;
-                    actionRule = a.rule;
+                    if(a.title.equals(doAction)){
+                        prefixChannelTwo = a.prefix;
+                        actionRule = a.rule;
+                        actionHasParameters = a.hasParameters();
+                    }
                 }
             }
         }
+
+
+
         String prefix = prefixChannelOne + " "  +prefixChannelTwo;
 
-        changeParameterOnRule(eventRule,"event");
-        changeParameterOnRule(actionRule, "action");
+        //Parameters
+        if(eventHasParameters){
+            eventRule = changeParameterOnRule(eventRule,"event");
+        }
+        if(actionHasParameters){
+            actionRule = changeParameterOnRule(actionRule, "action");
+        }
 
         String ifStatement = "{" + eventRule + "}=> ";
         String doStatement = "{" + actionRule + "}.";
-
+        Log.i("EYERule",prefix+ifStatement+doStatement);
         return prefix+ifStatement+doStatement;
     }
 
@@ -176,16 +193,18 @@ public class Rule{
                 }
             }
         }
+
         if(type.equals("event")){
-            for(int i = 1; i<nParamsEvent;i++){
-                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) ifParameter.get(i));
+            for(int i = 0; i<nParamsEvent;i++){
+                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i+1) + "#", ifParameter.get(i));
             }
         }
         if(type.equals("action")){
-            for(int i = 1; i<nParamsAction;i++){
-                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i) + "#",(String) doParameter.get(i));
+            for(int i = 0; i<nParamsAction;i++){
+                ruleReplaced = rule.replace("#PARAM_"+ String.valueOf(i+1) + "#", doParameter.get(i));
             }
         }
+        Log.i("RuleReplaced",ruleReplaced);
         return ruleReplaced;
     }
 }

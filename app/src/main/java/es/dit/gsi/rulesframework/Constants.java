@@ -27,15 +27,15 @@ public class Constants {
     public static String lastInputSent = "";
 
 
-    public static void savePreferences(Activity activity, String key, String value){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+    public static void savePreferences(Context context, String key, String value){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
         editor.commit();
     }
 
-    public static String readPreferences(Activity activity, String key, String defaultValue){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+    public static String readPreferences(Context context, String key, String defaultValue){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getString(key, defaultValue);
     }
 

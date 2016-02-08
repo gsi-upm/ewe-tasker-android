@@ -28,6 +28,9 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -36,12 +39,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import es.dit.gsi.rulesframework.adapters.MyRecyclerViewAdapter;
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
+import es.dit.gsi.rulesframework.model.Action;
+import es.dit.gsi.rulesframework.model.Channel;
+import es.dit.gsi.rulesframework.model.Event;
 import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.receivers.GeofenceIntentService;
+import es.dit.gsi.rulesframework.util.Tasks;
 
 public class SecondActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks , GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
@@ -104,6 +112,12 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
         populateGeofenceList();
 
         buildGoogleApiClient(); //Callback addGeofences()
+
+        try{
+            getChannels();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         //DEBUG
         //new RuleExecutionModule(getApplicationContext()).sendInputToEye("input","tono");
@@ -427,6 +441,61 @@ public class SecondActivity extends AppCompatActivity implements GoogleApiClient
             String errorMessage = "Error onResult";
             Log.e(TAG, errorMessage);
         }
+    }
+
+    //Channels
+
+    public void getChannels() throws JSONException {
+        //Get Task
+        //String response = "[{\"title\":\"door\",\"description\":\"This channel represents a door.\",\"events\":[{\"title\":\"Door opened event\",\"rule\":\"Rule for door opened\",\"prefix\":\"\",\"numParameters\":\"0\"}],\"actions\":[{\"title\":\"Open door action\",\"rule\":\"Rule for opening the door\",\"prefix\":\"\",\"numParameters\":\"0\"}]},{\"title\":\"tv\",\"description\":\"This channel represents a TV.\",\"events\":[{\"title\":\"If a knows b\",\"rule\":\"?a :knows ?b\",\"prefix\":\"\",\"numParameters\":\"0\"}],\"actions\":[{\"title\":\"then b knows a\",\"rule\":\"?b :knows ?a\",\"prefix\":\"\",\"numParameters\":\"0\"}]}]";
+        String response = "";
+        try {
+            response = new Tasks.GetChannelsFromServerTask().execute().get();
+            Log.i("NewRuleActivity", response);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Constants.savePreferences(getApplicationContext(), "channelsJson", response);
+    }
+
+    public static List<Channel> translateJSONtoList(String json) throws JSONException {
+        List<Channel> list = new ArrayList<>();
+
+        JSONArray channels = new JSONArray(json);
+        for (int i = 0; i < channels.length(); i++) {
+            JSONObject currentChannel = (JSONObject) channels.get(i);
+            String title = currentChannel.getString("title");
+            String description = currentChannel.getString("description");
+            JSONArray events = currentChannel.getJSONArray("events");
+            List<Event> eventsList = new ArrayList<>();
+            for (int j = 0; j < events.length(); j++) {
+                JSONObject currentEvent = (JSONObject) events.get(j);
+                String eventTitle = currentEvent.getString("title");
+                String eventPrefix = currentEvent.getString("prefix");
+                String eventRule = currentEvent.getString("rule");
+                String eventNumParameters = currentEvent.getString("num_of_params");
+                Event e = new Event(eventTitle, eventNumParameters, eventRule, eventPrefix);
+                eventsList.add(e);
+            }
+            JSONArray actions = currentChannel.getJSONArray("actions");
+            List<Action> actionsList = new ArrayList<>();
+            for (int n = 0; n < actions.length(); n++) {
+                JSONObject currentAction = (JSONObject) actions.get(n);
+                String actionTitle = currentAction.getString("title");
+                String actionPrefix = currentAction.getString("prefix");
+                String actionRule = currentAction.getString("rule");
+                String actionNumParameters = currentAction.getString("num_of_params");
+                Action ac = new Action(actionTitle, actionRule, actionPrefix, actionNumParameters);
+                actionsList.add(ac);
+            }
+            Channel ch = new Channel(title, description, actionsList, eventsList);
+            list.add(ch);
+        }
+
+        return list;
     }
 
 }

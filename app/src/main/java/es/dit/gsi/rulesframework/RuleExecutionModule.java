@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
 import cz.msebera.android.httpclient.util.EntityUtils;
+import es.dit.gsi.rulesframework.model.Channel;
+import es.dit.gsi.rulesframework.model.Event;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.performers.AudioPerformer;
 import es.dit.gsi.rulesframework.performers.NotificationPerformer;
@@ -61,10 +64,9 @@ public class RuleExecutionModule {
         this.context=context;
     }
 
-    public void sendInputToEye(String input,String place){
+    public void sendInputToEye(String input,String user){
         //TODO: Input to Server
-        //params = {"input","place"}
-        String[] params = {input,place};
+        String[] params = {input,user};
         String response = "";
         try {
             response = new Tasks.PostInputToServerTask().execute(params).get();
@@ -74,16 +76,10 @@ public class RuleExecutionModule {
             e.printStackTrace();
         }
 
-        //TODO: Handle Response
-        //getDoFromResult(response);
-        //executeDoResponse("Notification", "SHOW", "parameter");
+        getDoFromResult(response);
 
 
         //DEBUG
-        if(input.equals("GSI")){
-            executeDoResponse("Audio","Vibrate","null");
-        }
-
 
     }
 
@@ -119,28 +115,28 @@ public class RuleExecutionModule {
                 case("Notification"):
                     NotificationPerformer np = new NotificationPerformer(context);
                     switch (doAction){//Filter actions
-                        case "SHOW":np.show(parameter);break;
+                        case "Show":np.show(parameter);break;
                     }
                     break;
                 case ("Toast"):
                     ToastPerformer tp = new ToastPerformer(context);
                     switch (doAction){//Filter actions
-                        case "SHOW":
+                        case "Show":
                             tp.show(parameter);break;
                     }
                     break;
-                case ("WiFi"):
+                case ("Wifi"):
                     WifiPerformer wp = new WifiPerformer(context);
                     switch(doAction) {//FilterActions
                         case "ON": wp.turnOn();
                         case "OFF":wp.turnOff();
                     }
-                case ("Audio"):
+                case ("AudioManager"):
                     AudioPerformer ap = new AudioPerformer(context);
                     switch(doAction) {//FilterActions
-                        case "Normal": ap.setNormalMode();
-                        case "Silent":ap.setSilentMode();
-                        case "Vibrate":ap.setVibrateMode();
+                        case "Normal": ap.setNormalMode();break;
+                        case "Silence": ap.setSilentMode();break;
+                        case "Vibrate": ap.setVibrateMode();break;
                     }
                 default:
             }
@@ -150,5 +146,50 @@ public class RuleExecutionModule {
         }
     }
 
+    public String generateInput(String channel, String event) {
+        String json = Constants.readPreferences(context,"channelsJson","");
+        //Log.i("Execution",json);
+        List<Channel> channelList = null;
+        try {
+            channelList = SecondActivity.translateJSONtoList(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String input = "";
+        for (Channel ch : channelList){
+            if(ch.title.equalsIgnoreCase(channel)){
+                for(Event e : ch.events){
+                    if (e.title.equalsIgnoreCase(event)){
+                        String statement = e.rule.replace("?event","ewe-"+channel.toLowerCase()+":"+channel);
+                        input = e.prefix + "\n" + statement;
+                    }
+                }
+            }
+        }
+        Log.i("Execution",input);
+        return input;
+    }
 
+    public String getPrefixes(String channel,String event){
+        String json = Constants.readPreferences(context,"channelsJson","");
+        //Log.i("Execution",json);
+        List<Channel> channelList = null;
+        try {
+            channelList = SecondActivity.translateJSONtoList(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String prefix = "";
+        for (Channel ch : channelList){
+            if(ch.title.equalsIgnoreCase(channel)){
+                for(Event e : ch.events){
+                    if (e.title.equalsIgnoreCase(event)){
+                        prefix = e.prefix ;
+                    }
+                }
+            }
+        }
+
+        return prefix;
+    }
 }
