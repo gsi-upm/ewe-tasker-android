@@ -347,7 +347,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     public void configureDoActionViewHolder (ActionViewHolder vh,final int position){
         Action action = (Action) items.get(position);
-        NewRuleActivity.mService.setAction(action.title);
         Picasso.with(context).load(R.drawable.arrow_right).resize(200,200).into(vh.icon);
         vh.name.setText(action.title);
         vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
@@ -357,6 +356,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             public void onClick(View v) {
                 //Optional set parameter on bundle
                 final Action action = (Action) items.get(position);
+                NewRuleActivity.mService.setAction(action.title);
                 LayoutInflater inflater = LayoutInflater.from(context);
                 if (action.hasParameters()) {
                     //Request String parameter

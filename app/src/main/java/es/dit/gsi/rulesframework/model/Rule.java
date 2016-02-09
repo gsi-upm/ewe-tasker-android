@@ -144,6 +144,7 @@ public class Rule{
                 for (Action a : channelList.get(i).actions) {
                     if(a.title.equals(doAction)){
                         prefixChannelTwo = a.prefix;
+                        Log.i("EYERule",a.rule);
                         actionRule = a.rule;
                         actionHasParameters = a.hasParameters();
                     }
