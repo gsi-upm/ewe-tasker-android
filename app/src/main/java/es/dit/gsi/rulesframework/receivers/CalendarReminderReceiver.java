@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 
-import es.dit.gsi.rulesframework.RuleExecutionModule;
+import es.dit.gsi.rulesframework.services.RuleExecutionModule;
 
 /**
  * Created by afernandez on 8/01/16.

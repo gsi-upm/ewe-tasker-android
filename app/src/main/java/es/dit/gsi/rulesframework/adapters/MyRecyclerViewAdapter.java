@@ -402,7 +402,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 NewRuleActivity.mService.resetService();
                 NewRuleActivity.isIfChannelSelected = false;
 
-                /*Intent mIntent=new Intent(context,SecondActivity.class);
+                /*Intent mIntent=new Intent(context,ListRulesActivity.class);
                 context.startActivity(mIntent);*/
                 ((Activity) context).finish();
 

@@ -1,32 +1,19 @@
-package es.dit.gsi.rulesframework;
+package es.dit.gsi.rulesframework.services;
 
-import android.app.NotificationManager;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
-import cz.msebera.android.httpclient.util.EntityUtils;
+import es.dit.gsi.rulesframework.util.Constants;
+import es.dit.gsi.rulesframework.ListRulesActivity;
 import es.dit.gsi.rulesframework.model.Channel;
 import es.dit.gsi.rulesframework.model.Event;
-import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.performers.AudioPerformer;
 import es.dit.gsi.rulesframework.performers.NotificationPerformer;
 import es.dit.gsi.rulesframework.performers.ToastPerformer;
@@ -38,27 +25,6 @@ import es.dit.gsi.rulesframework.util.Tasks;
  */
 public class RuleExecutionModule {
     Context context;
-
-    String jsonDebug = "{\n" +
-            "  \"success\": 1,\n" +
-            "  \"actions\": [\n" +
-            "    {\n" +
-            "      \"channel\":\"Notification\",\n" +
-            "      \"action\":\"Show\",\n" +
-            "      \"parameter\":\"Example String\"\n" +
-            "        },\n" +
-            "    {\n" +
-            "      \"channel\": \"Wifi\",\n" +
-            "      \"action\": \"ON\",\n" +
-            "      \"parameter\": \"null\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"channel\": \"DoorSensor\",\n" +
-            "      \"action\": \"Open\",\n" +
-            "      \"parameter\":\"null\"\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}";
 
     public RuleExecutionModule(Context context){
         this.context=context;
@@ -147,11 +113,11 @@ public class RuleExecutionModule {
     }
 
     public String generateInput(String channel, String event) {
-        String json = Constants.readPreferences(context,"channelsJson","");
+        String json = Constants.readPreferences(context, "channelsJson", "");
         //Log.i("Execution",json);
         List<Channel> channelList = null;
         try {
-            channelList = SecondActivity.translateJSONtoList(json);
+            channelList = ListRulesActivity.translateJSONtoList(json);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -175,7 +141,7 @@ public class RuleExecutionModule {
         //Log.i("Execution",json);
         List<Channel> channelList = null;
         try {
-            channelList = SecondActivity.translateJSONtoList(json);
+            channelList = ListRulesActivity.translateJSONtoList(json);
         } catch (JSONException e) {
             e.printStackTrace();
         }

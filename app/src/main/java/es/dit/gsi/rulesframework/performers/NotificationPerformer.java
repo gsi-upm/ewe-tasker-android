@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.TaskStackBuilder;
-import android.widget.Toast;
 
+import es.dit.gsi.rulesframework.ListRulesActivity;
 import es.dit.gsi.rulesframework.R;
-import es.dit.gsi.rulesframework.SecondActivity;
 
 /**
  * Created by afernandez on 25/01/16.
@@ -24,13 +23,13 @@ public class NotificationPerformer {
 
     public void show (String parameter){
 // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(context, SecondActivity.class);
+        Intent notificationIntent = new Intent(context, ListRulesActivity.class);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
         // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(SecondActivity.class);
+        stackBuilder.addParentStack(ListRulesActivity.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);

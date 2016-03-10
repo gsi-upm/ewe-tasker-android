@@ -6,32 +6,39 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import es.dit.gsi.rulesframework.services.RuleExecutionModule;
+
 /**
  * Created by afernandez on 26/10/15.
  */
 public class WifiReceiver extends BroadcastReceiver{
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        String user="afll";
+        String channel="Wifi";
+        String input = "";
+
         int extraWifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE ,
                 WifiManager.WIFI_STATE_UNKNOWN);
+        RuleExecutionModule ruleExecutionModule = new RuleExecutionModule(context);
 
         switch(extraWifiState){
             case WifiManager.WIFI_STATE_DISABLED:
-                //WifiState.setText("WIFI STATE DISABLED");
                 Log.i("RULESFW","Wifi disabled");
+                input = ruleExecutionModule.generateInput(channel,"Turn OFF");
+                ruleExecutionModule.sendInputToEye(input, user);
                 break;
             case WifiManager.WIFI_STATE_DISABLING:
-                //WifiState.setText("WIFI STATE DISABLING");
                 break;
             case WifiManager.WIFI_STATE_ENABLED:
-                //WifiState.setText("WIFI STATE ENABLED");
                 Log.i("RULESFW","Wifi enabled");
+                input = ruleExecutionModule.generateInput(channel,"Turn ON");
+                ruleExecutionModule.sendInputToEye(input, user);
                 break;
             case WifiManager.WIFI_STATE_ENABLING:
-                //WifiState.setText("WIFI STATE ENABLING");
                 break;
             case WifiManager.WIFI_STATE_UNKNOWN:
-                //WifiState.setText("WIFI STATE UNKNOWN");
                 break;
         }
     }

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.dit.gsi.rulesframework.R;
-import es.dit.gsi.rulesframework.RuleExecutionModule;
-import es.dit.gsi.rulesframework.SecondActivity;
+import es.dit.gsi.rulesframework.services.RuleExecutionModule;
+import es.dit.gsi.rulesframework.ListRulesActivity;
 import es.dit.gsi.rulesframework.util.GeofenceErrorMessages;
 
 /**
@@ -122,13 +122,13 @@ public class GeofenceIntentService extends IntentService {
      */
     private void sendNotification(String notificationDetails) {
         // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), SecondActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), ListRulesActivity.class);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(SecondActivity.class);
+        stackBuilder.addParentStack(ListRulesActivity.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);

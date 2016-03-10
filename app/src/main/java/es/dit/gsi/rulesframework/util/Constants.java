@@ -1,4 +1,4 @@
-package es.dit.gsi.rulesframework;
+package es.dit.gsi.rulesframework.util;
 
 import android.app.Activity;
 import android.content.Context;

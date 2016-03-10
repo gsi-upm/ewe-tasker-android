@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
@@ -16,24 +15,18 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoContainerFragment;
 import es.dit.gsi.rulesframework.fragments.IfContainerFragment;
-import es.dit.gsi.rulesframework.model.Action;
 import es.dit.gsi.rulesframework.model.Channel;
-import es.dit.gsi.rulesframework.model.Event;
 import es.dit.gsi.rulesframework.services.RuleDefinitionModule;
-import es.dit.gsi.rulesframework.util.Tasks;
+import es.dit.gsi.rulesframework.util.Constants;
 
 /**
  * Created by afernandez on 27/11/15.
@@ -137,8 +130,8 @@ public class NewRuleActivity extends AppCompatActivity{
     //Channels
 
     public void getChannels() throws JSONException {
-        String json = Constants.readPreferences(getApplicationContext(),"channelsJson","");
+        String json = Constants.readPreferences(getApplicationContext(), "channelsJson", "");
 
-        channelList = SecondActivity.translateJSONtoList(json);
+        channelList = ListRulesActivity.translateJSONtoList(json);
     }
 }

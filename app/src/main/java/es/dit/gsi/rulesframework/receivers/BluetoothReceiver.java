@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import es.dit.gsi.rulesframework.RuleExecutionModule;
+import es.dit.gsi.rulesframework.services.RuleExecutionModule;
 
 /**
  * Created by afernandez on 26/10/15.
