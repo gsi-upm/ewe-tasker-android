@@ -42,7 +42,7 @@ public class RuleExecutionModule {
             e.printStackTrace();
         }
 
-        getDoFromResult(response);
+        handleServerResponse(response);
 
 
         //DEBUG
@@ -50,7 +50,7 @@ public class RuleExecutionModule {
     }
 
     //Handle EYE result
-    public void getDoFromResult(String respJson){
+    public void handleServerResponse(String respJson){
         String doElement, doAction, doParameter;
         try {
             JSONObject jsonObject = new JSONObject(respJson);
