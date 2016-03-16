@@ -66,6 +66,8 @@
         </activity>
         <activity android:name=".NewRuleActivity"></activity>
         <activity android:name=".BeaconActivity"></activity>
+        <activity android:name=".ConfigureBeaconActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".ListGeofencesActivity"/>
         <service android:name=".services.RuleDefinitionModule" android:enabled="true"/>
         <service android:name=".receivers.GeofenceIntentService" android:enabled="true"/>

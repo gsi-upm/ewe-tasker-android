@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import es.dit.gsi.rulesframework.performers.DoorPerformer;
 import es.dit.gsi.rulesframework.util.Constants;
 import es.dit.gsi.rulesframework.ListRulesActivity;
 import es.dit.gsi.rulesframework.model.Channel;
@@ -97,12 +98,20 @@ public class RuleExecutionModule {
                         case "ON": wp.turnOn();
                         case "OFF":wp.turnOff();
                     }
+                    break;
                 case ("AudioManager"):
                     AudioPerformer ap = new AudioPerformer(context);
                     switch(doAction) {//FilterActions
                         case "Normal": ap.setNormalMode();break;
                         case "Silence": ap.setSilentMode();break;
                         case "Vibrate": ap.setVibrateMode();break;
+                    }
+                    break;
+                case "DoorLock":
+                    DoorPerformer doorPerformer = new DoorPerformer(context);
+                    switch (doAction) {
+                        case "Open":
+                            doorPerformer.openDoor(context);
                     }
                 default:
             }

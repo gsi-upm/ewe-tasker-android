@@ -30,6 +30,7 @@ public class Tasks {
     private static final String urlRulesApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
     private static final String urlInputApi = "http://taskautomationserver.ddns.net/taskautomationweb/controller/eventsManager.php";
     private static final String urlGetChannelApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
+    private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
 
@@ -138,6 +139,40 @@ public class Tasks {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return response;
+        }
+    }
+
+    public static class LoginGSIServerTask extends AsyncTask<String , Void, String> {
+
+        @Override
+        protected String doInBackground(String... par) {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(urlBifrost);
+
+            String user = par[0];
+            String pass = par[1];
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            Log.i("Task",user);
+
+            params.add(new BasicNameValuePair("username", user));
+            params.add(new BasicNameValuePair("pass", pass));
+
+            String response = "";
+            try {
+                post.setEntity(new UrlEncodedFormEntity(params));
+
+                HttpResponse resp = null;
+                resp = client.execute(post);
+
+                HttpEntity ent = resp.getEntity();
+                response = EntityUtils.toString(ent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.i("Task", "LogIn reponse: " + response);
             return response;
         }
     }

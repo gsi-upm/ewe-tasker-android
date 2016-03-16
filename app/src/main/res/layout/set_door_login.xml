@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Username:"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:fontName="Titillium-Regular.otf"
+            android:id="@+id/userTv" />
+        <es.dit.gsi.rulesframework.util.TitilliumEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fontName="Titillium-Regular.otf"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:id="@+id/userField" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Password:"
+            android:textSize="20sp"
+            app:fontName="Titillium-Regular.otf"
+            android:id="@+id/passTv"/>
+        <es.dit.gsi.rulesframework.util.TitilliumEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fontName="Titillium-Regular.otf"
+            android:password="true"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:id="@+id/passField" />
+    </LinearLayout>
+</LinearLayout>

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
@@ -17,10 +19,11 @@ import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.Utils;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import es.dit.gsi.rulesframework.performers.DoorPerformer;
 import es.dit.gsi.rulesframework.services.RuleExecutionModule;
+import es.dit.gsi.rulesframework.util.CacheMethods;
 import es.dit.gsi.rulesframework.util.Tasks;
 
 /**
@@ -32,6 +35,10 @@ public class BeaconActivity extends ActionBarActivity {
     CountDownTimer cdt;
 
     RuleExecutionModule ruleExecutionModule;
+    CacheMethods cacheMethods;
+    ImageView beaconIcon;
+
+    String user,place;
 
     boolean sendEvent = true;
     @Override
@@ -40,8 +47,12 @@ public class BeaconActivity extends ActionBarActivity {
         setContentView(R.layout.activity_beacons);
 
         ruleExecutionModule = new RuleExecutionModule(getApplicationContext());
+        cacheMethods = CacheMethods.getInstance(getApplicationContext());
 
-        beaconManager = new BeaconManager(getApplicationContext());
+        String user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
+        String place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
+
+        /*beaconManager = new BeaconManager(getApplicationContext());
         region = new Region("ranged region",
                 UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
 
@@ -70,7 +81,19 @@ public class BeaconActivity extends ActionBarActivity {
                 start();
             }
 
-        }.start();
+        }.start();*/
+
+        beaconIcon = (ImageView) findViewById(R.id.beaconIcon);
+        beaconIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent i = new Intent(getApplicationContext(),ConfigureBeaconActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);*/
+                DoorPerformer doorPerformer = new DoorPerformer(getApplicationContext());
+                doorPerformer.openDoor(v.getContext());
+            }
+        });
 
 
     }
@@ -110,9 +133,8 @@ public class BeaconActivity extends ActionBarActivity {
                         " ewe:distance " +
                         accuracy+
                         ".";
-                String user = "afll";
+
                 String inputEvent = event;
-                String place = "";
                 String[] params = {inputEvent,user};
 
                 //Task send to sever
@@ -139,19 +161,22 @@ public class BeaconActivity extends ActionBarActivity {
 
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+        /*beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
                 beaconManager.startRanging(region);
             }
-        });
+        });*/
+
+        user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
+        place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        cdt.cancel();
-        beaconManager.stopRanging(region);
+        //cdt.cancel();
+        //beaconManager.stopRanging(region);
     }
 
     @Override

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gsi_blue"
+    android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fontName="Titillium-Regular.otf"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Type the place whose rules you want to be evaluated"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+        <es.dit.gsi.rulesframework.util.TitilliumEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextPlace"
+            app:fontName="Titillium-Regular.otf"
+            android:background="@drawable/edittext_bg"
+            android:textColor="@color/black"
+            android:hint="home,gsi lab, bus, work..." />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fontName="Titillium-Regular.otf"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Type the user whose rules you want to be evaluated"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+        <es.dit.gsi.rulesframework.util.TitilliumEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_bg"
+            android:id="@+id/editTextUser"
+            android:textColor="@color/black"
+            app:fontName="Titillium-Regular.otf"
+            android:hint="Sergio, Antonio ..." />
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:fontName="Titillium-Regular.otf"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Note: The user must be registered in the server website."
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:fontName="Titillium-Regular.otf"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Press beacon to save"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/beaconIcon"
+            android:src="@drawable/beacon"/>
+    </LinearLayout>
+
+</LinearLayout>
