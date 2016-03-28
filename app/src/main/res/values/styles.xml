@@ -8,9 +8,10 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="ifGreen">#8FC654</color>
-    <color name="blueDesc">#0093AF</color>
+    <color name="blueDesc">#0094ab</color>
     <color name="grey">#C7C7C7</color>
     <color name="gsi_blue">#0094ab</color>
+    <color name="light_blue">#6694ab</color>
 
     <style name="myDialogThemeAppCompat" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>

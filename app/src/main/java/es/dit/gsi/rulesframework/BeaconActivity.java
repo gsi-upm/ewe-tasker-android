@@ -19,6 +19,7 @@ import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.Utils;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import es.dit.gsi.rulesframework.performers.DoorPerformer;
@@ -49,10 +50,10 @@ public class BeaconActivity extends ActionBarActivity {
         ruleExecutionModule = new RuleExecutionModule(getApplicationContext());
         cacheMethods = CacheMethods.getInstance(getApplicationContext());
 
-        String user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
-        String place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
+        user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
+        place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
 
-        /*beaconManager = new BeaconManager(getApplicationContext());
+        beaconManager = new BeaconManager(getApplicationContext());
         region = new Region("ranged region",
                 UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
 
@@ -81,17 +82,15 @@ public class BeaconActivity extends ActionBarActivity {
                 start();
             }
 
-        }.start();*/
+        }.start();
 
         beaconIcon = (ImageView) findViewById(R.id.beaconIcon);
         beaconIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i = new Intent(getApplicationContext(),ConfigureBeaconActivity.class);
+                Intent i = new Intent(getApplicationContext(),ConfigureBeaconActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);*/
-                DoorPerformer doorPerformer = new DoorPerformer(getApplicationContext());
-                doorPerformer.openDoor(v.getContext());
+                startActivity(i);
             }
         });
 
@@ -161,12 +160,12 @@ public class BeaconActivity extends ActionBarActivity {
 
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
-        /*beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
                 beaconManager.startRanging(region);
             }
-        });*/
+        });
 
         user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
         place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
@@ -175,8 +174,8 @@ public class BeaconActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //cdt.cancel();
-        //beaconManager.stopRanging(region);
+        cdt.cancel();
+        beaconManager.stopRanging(region);
     }
 
     @Override

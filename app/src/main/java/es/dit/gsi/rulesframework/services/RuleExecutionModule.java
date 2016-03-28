@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -124,7 +125,7 @@ public class RuleExecutionModule {
     public String generateInput(String channel, String event) {
         String json = Constants.readPreferences(context, "channelsJson", "");
         //Log.i("Execution",json);
-        List<Channel> channelList = null;
+        List<Channel> channelList = new ArrayList<>();
         try {
             channelList = ListRulesActivity.translateJSONtoList(json);
         } catch (JSONException e) {

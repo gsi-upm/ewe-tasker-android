@@ -40,4 +40,9 @@ public class LoginActivity extends ActionBarActivity {
         });
         alert.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
