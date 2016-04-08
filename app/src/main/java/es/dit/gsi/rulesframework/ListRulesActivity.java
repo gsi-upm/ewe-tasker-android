@@ -133,6 +133,11 @@ public class ListRulesActivity extends AppCompatActivity implements GoogleApiCli
                 db.deleteAllRules();
                 addItems();
                 return true;
+            case R.id.info:
+                Intent i = new Intent(this,InfoGSIActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                return true;
             /*case R.id.deleteAllGeofences:
                 removeGeofences();
             case R.id.listGeofences:

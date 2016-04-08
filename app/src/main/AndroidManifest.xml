@@ -67,6 +67,7 @@
         </activity>
         <activity android:name=".NewRuleActivity"></activity>
         <activity android:name=".BeaconActivity"></activity>
+        <activity android:name=".InfoGSIActivity"></activity>
         <activity android:name=".ConfigureBeaconActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".ListGeofencesActivity"/>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ewetasker"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@color/white">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fontName="Titillium-Regular.otf"
+            android:text="Enabling technologies"
+            android:textColor="@color/black"
+            android:layout_margin="6dp"
+            android:textSize="25sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="6dp"
+            android:background="@drawable/element_bg">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="6dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ewe_logo"/>
+            </LinearLayout>
+            <es.dit.gsi.rulesframework.util.TitilliumTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fontName="Titillium-Regular.otf"
+                android:text="This application uses EWE ontology for channel modelling. EWE ontology models the most important aspects of TAS from a descriptive approach, that enables service disovery and semantic rule definition featuring reasoning"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+
+            <es.dit.gsi.rulesframework.util.TitilliumTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fontName="Titillium-Regular.otf"
+                android:id="@+id/eweReference"
+                android:autoLink="web"
+                android:text="+ More info"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_marginTop="6dp"
+                android:linksClickable="true"
+                android:clickable="true"
+                android:textColorLink="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+</LinearLayout>
+</ScrollView>
