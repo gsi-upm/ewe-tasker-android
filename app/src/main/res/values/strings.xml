@@ -42,4 +42,5 @@
     <string name="unknown_geofence_transition">Unknown Transition</string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
+    <string name="more_info"><u>+ More info</u></string>
 </resources>

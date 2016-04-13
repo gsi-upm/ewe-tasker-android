@@ -57,7 +57,7 @@
                 app:fontName="Titillium-Regular.otf"
                 android:id="@+id/eweReference"
                 android:autoLink="web"
-                android:text="+ More info"
+                android:text="@string/more_info"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:layout_marginTop="6dp"
@@ -65,6 +65,101 @@
                 android:clickable="true"
                 android:textColorLink="@color/white"/>
             </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="6dp"
+            android:background="@drawable/element_bg">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="6dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/eye"/>
+                <es.dit.gsi.rulesframework.util.TitilliumTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fontName="Titillium-Regular.otf"
+                    android:text="EYE"
+                    android:textColor="@color/white"
+                    android:textSize="45sp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <es.dit.gsi.rulesframework.util.TitilliumTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fontName="Titillium-Regular.otf"
+                android:text="This application uses EYE which stands for Euler Yet another proof Engine, and it is a further development of Euler which is an inference engine supporting logic based proofs. EYE is a semibackward reasoner enhanced with Euler path detection. The core of EYE accepts N3 (Notation 3) code, which is a Prolog representation resulting from parsing RDF triples and N3 rules."
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+
+            <es.dit.gsi.rulesframework.util.TitilliumTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fontName="Titillium-Regular.otf"
+                android:id="@+id/eyeReference"
+                android:autoLink="web"
+                android:text="@string/more_info"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_marginTop="6dp"
+                android:linksClickable="true"
+                android:clickable="true"
+                android:textColorLink="@color/white"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="6dp"
+            android:background="@drawable/element_bg">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="6dp">
+                <es.dit.gsi.rulesframework.util.TitilliumTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fontName="NovaSquare.ttf"
+                    android:text="ewe tasker"
+                    android:textColor="@color/white"
+                    android:textSize="45sp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <es.dit.gsi.rulesframework.util.TitilliumTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fontName="Titillium-Regular.otf"
+                android:text="This application is linked with the EWETasker website. From this site, every channel information, N3 prefixes and events/actions description are defined."
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+
+            <es.dit.gsi.rulesframework.util.TitilliumTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fontName="Titillium-Regular.otf"
+                android:id="@+id/eweTaskerReference"
+                android:autoLink="web"
+                android:text="@string/more_info"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_marginTop="6dp"
+                android:linksClickable="true"
+                android:clickable="true"
+                android:textColorLink="@color/white"/>
+        </LinearLayout>
+
         </LinearLayout>
 </LinearLayout>
+
 </ScrollView>
