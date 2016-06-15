@@ -34,6 +34,7 @@ import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.fragments.BaseContainerFragment;
 import es.dit.gsi.rulesframework.fragments.DoActionFragment;
 import es.dit.gsi.rulesframework.fragments.IfActionFragment;
+import es.dit.gsi.rulesframework.util.Tasks;
 import es.dit.gsi.rulesframework.viewholder.ActionViewHolder;
 import es.dit.gsi.rulesframework.viewholder.ElementViewHolder;
 import es.dit.gsi.rulesframework.viewholder.GeofenceViewHolder;
@@ -162,8 +163,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         Log.i("Rules", "Configure Rule ViewHolder");
         Rule mRule = (Rule) items.get(position);
 
-        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+mRule.getIfElement()+".png").resize(170, 170).into(vh.ifChannel);
-        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+mRule.getDoElement()+".png").resize(170,170).into(vh.doChannel);
+        Picasso.with(context).load(Tasks.urlImages+mRule.getIfElement()+".png").resize(170, 170).into(vh.ifChannel);
+        Picasso.with(context).load(Tasks.urlImages + mRule.getDoElement() + ".png").resize(170, 170).into(vh.doChannel);
 
         vh.ifElement.setTypeface(Typeface.createFromAsset(context.getAssets(), "century-gothic-bold.ttf"));
         vh.doElement.setTypeface(Typeface.createFromAsset(context.getAssets(), "century-gothic-bold.ttf"));
@@ -176,7 +177,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         vh.name.setText(ch.title);
         vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
 
-        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+ch.title+".png").resize(200,200).into(vh.icon);
+        Picasso.with(context).load(Tasks.urlImages+ch.title+".png").resize(200,200).into(vh.icon);
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -327,7 +328,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         vh.name.setText(channel.title);
         vh.name.setTypeface(Typeface.createFromAsset(context.getAssets(), "Titillium-Regular.otf"));
 
-        Picasso.with(context).load("http://taskautomationserver.ddns.net/taskautomationweb/img/"+channel.title+".png").resize(200,200).into(vh.icon);
+        Picasso.with(context).load(Tasks.urlImages+channel.title+".png").resize(200,200).into(vh.icon);
         vh.layoutClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

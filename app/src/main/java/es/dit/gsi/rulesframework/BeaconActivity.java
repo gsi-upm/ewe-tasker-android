@@ -120,15 +120,15 @@ public class BeaconActivity extends ActionBarActivity {
             for (Beacon beacon : beacons) {
                 int beaconId = beacon.getMajor();
                 double accuracy = Utils.computeAccuracy(beacon);
-
+                Log.i("BEACON", String.valueOf(beaconId));
                 String event = "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . @prefix ewe-presence: <http://gsi.dit.upm.es/ontologies/ewe-connected-home-presence/ns/#> . @prefix ewe: <http://gsi.dit.upm.es/ontologies/ewe/ns/#> . @prefix ewe-presence: <http://gsi.dit.upm.es/ontologies/ewe-connected-home-presence/ns/#> . ewe-presence:PresenceSensor" +
-                        beaconId +
+
                         " rdf:type ewe-presence:PresenceDetectedAtDistance. ewe-presence:PresenceSensor"+
-                        beaconId+
+
                         " ewe:sensorID \"" +
                         beaconId +
-                        "\". ewe-presence:PresenceSensor" +
-                        beaconId +
+
+                        "\". ewe-presence:PresenceSensor"+
                         " ewe:distance " +
                         accuracy+
                         ".";
@@ -146,7 +146,8 @@ public class BeaconActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
                 Log.i("Countdown", "Beacon delivery finished");
-
+                Log.i("BEACON",inputEvent);
+                Log.i("BEACON",response);
                 //Send response to RuleExecutionModule
                 ruleExecutionModule.handleServerResponse(response);
             }

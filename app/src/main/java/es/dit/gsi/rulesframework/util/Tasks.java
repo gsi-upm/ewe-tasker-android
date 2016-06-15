@@ -1,7 +1,9 @@
 package es.dit.gsi.rulesframework.util;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,14 +25,16 @@ import es.dit.gsi.rulesframework.model.Rule;
  */
 public class Tasks {
 
-    //private static final String urlRulesApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
-    //private static final String urlInputApi = "http://138.4.3.211/server/tfgfinal/inputinserter.php";
-    //private static final String urlGetChannelApi = "http://138.4.3.211/taskautomationweb/mobileConnectionHelper.php";
+    private static final String urlRulesApi = "http://138.4.3.247:8080/mobileConnectionHelper.php";
+    private static final String urlInputApi = "http://138.4.3.247:8080/controller/eventsManager.php";
+    private static final String urlGetChannelApi = "http://138.4.3.247:8080/mobileConnectionHelper.php";
+    private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";
+    public static final String urlImages = "http://138.4.3.247:8080/img/";
 
-    private static final String urlRulesApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
+    /*private static final String urlRulesApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
     private static final String urlInputApi = "http://taskautomationserver.ddns.net/taskautomationweb/controller/eventsManager.php";
     private static final String urlGetChannelApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
-    private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";
+    private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";*/
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
 
@@ -144,20 +148,24 @@ public class Tasks {
     }
 
     public static class LoginGSIServerTask extends AsyncTask<String , Void, String> {
+        Context context;
+        public LoginGSIServerTask(Context context){
+            this.context=context;
+        }
 
         @Override
         protected String doInBackground(String... par) {
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(urlBifrost);
 
-            String user = par[0];
-            String pass = par[1];
+            //String user = par[0];
+            String pass = par[0];
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-            Log.i("Task",user);
+            //Log.i("Task",user);
 
-            params.add(new BasicNameValuePair("username", user));
+            //params.add(new BasicNameValuePair("username", user));
             params.add(new BasicNameValuePair("pass", pass));
 
             String response = "";
@@ -171,6 +179,14 @@ public class Tasks {
                 response = EntityUtils.toString(ent);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            if (response.equals("1")){
+                if(par[1].equals("true")) {
+                    //Save in local
+                    CacheMethods cacheMethods = CacheMethods.getInstance(context);
+                    cacheMethods.saveInPreferences("doorKey",pass);
+                }
+                Toast.makeText(context,"Door opened. Press stop listening.",Toast.LENGTH_LONG).show();
             }
             Log.i("Task", "LogIn reponse: " + response);
             return response;

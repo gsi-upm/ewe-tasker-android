@@ -7,8 +7,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
+import es.dit.gsi.rulesframework.util.CacheMethods;
 import es.dit.gsi.rulesframework.util.Tasks;
 
 /**
@@ -30,11 +32,11 @@ public class LoginActivity extends ActionBarActivity {
         alert.setPositiveButton("LOG IN", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EditText userField = (EditText) layout.findViewById(R.id.userField);
                 EditText passField = (EditText) layout.findViewById(R.id.passField);
+                CheckBox remember = (CheckBox) layout.findViewById(R.id.remember);
 
                 //Login server task
-                new Tasks.LoginGSIServerTask().execute(userField.getText().toString(), passField.getText().toString());
+                new Tasks.LoginGSIServerTask(getApplicationContext()).execute(passField.getText().toString(), String.valueOf(remember.isChecked()));
                 finish();
             }
         });

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import es.dit.gsi.rulesframework.LoginActivity;
 import es.dit.gsi.rulesframework.NewRuleActivity;
 import es.dit.gsi.rulesframework.R;
+import es.dit.gsi.rulesframework.util.CacheMethods;
 import es.dit.gsi.rulesframework.util.Tasks;
 
 /**
@@ -25,9 +26,15 @@ public class DoorPerformer {
     }
 
     public void openDoor(Context context){
-        Intent i = new Intent(context, LoginActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        String pass = CacheMethods.getInstance(context).getFromPreferences("doorKey","");
+        if(pass.equals("")) {
+            Intent i = new Intent(context, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }
+        else{
+            new Tasks.LoginGSIServerTask(context).execute(pass,"true");
+        }
     }
 
 }

@@ -111,7 +111,7 @@ public class RuleExecutionModule {
                 case "DoorLock":
                     DoorPerformer doorPerformer = new DoorPerformer(context);
                     switch (doAction) {
-                        case "Open":
+                        case "OpenDoor":
                             doorPerformer.openDoor(context);
                     }
                 default:
