@@ -5,12 +5,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
@@ -31,6 +34,7 @@ import es.dit.gsi.rulesframework.util.Tasks;
  * Created by afernandez on 14/03/16.
  */
 public class BeaconActivity extends ActionBarActivity {
+    ProgressBar progressBar;
     BeaconManager beaconManager;
     private Region region;
     CountDownTimer cdt;
@@ -50,7 +54,7 @@ public class BeaconActivity extends ActionBarActivity {
         ruleExecutionModule = new RuleExecutionModule(getApplicationContext());
         cacheMethods = CacheMethods.getInstance(getApplicationContext());
 
-        user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
+        user = cacheMethods.getFromPreferences("beaconRuleUser", "afll");
         place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
 
         beaconManager = new BeaconManager(getApplicationContext());
@@ -94,6 +98,8 @@ public class BeaconActivity extends ActionBarActivity {
             }
         });
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
     }
 

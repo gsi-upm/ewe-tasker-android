@@ -25,16 +25,13 @@ import es.dit.gsi.rulesframework.model.Rule;
  */
 public class Tasks {
 
-    private static final String urlRulesApi = "http://138.4.3.247:8080/mobileConnectionHelper.php";
-    private static final String urlInputApi = "http://138.4.3.247:8080/controller/eventsManager.php";
-    private static final String urlGetChannelApi = "http://138.4.3.247:8080/mobileConnectionHelper.php";
+    public static String ipServer = "http://138.4.3.247:8080";
+    public static final String defaultGsiUrl = "http://138.4.3.247:8080";
+    private static final String urlRulesApi =ipServer +  "/mobileConnectionHelper.php";
+    private static final String urlInputApi =ipServer +  "/controller/eventsManager.php";
+    private static final String urlGetChannelApi =ipServer +  "/mobileConnectionHelper.php";
     private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";
-    public static final String urlImages = "http://138.4.3.247:8080/img/";
-
-    /*private static final String urlRulesApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
-    private static final String urlInputApi = "http://taskautomationserver.ddns.net/taskautomationweb/controller/eventsManager.php";
-    private static final String urlGetChannelApi = "http://taskautomationserver.ddns.net/taskautomationweb/mobileConnectionHelper.php";
-    private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";*/
+    public static final String urlImages = ipServer + "/img/";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
 
@@ -149,6 +146,7 @@ public class Tasks {
 
     public static class LoginGSIServerTask extends AsyncTask<String , Void, String> {
         Context context;
+        String pass,remember = "";
         public LoginGSIServerTask(Context context){
             this.context=context;
         }
@@ -159,7 +157,8 @@ public class Tasks {
             HttpPost post = new HttpPost(urlBifrost);
 
             //String user = par[0];
-            String pass = par[0];
+             pass = par[0];
+             remember = par[1];
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -180,16 +179,22 @@ public class Tasks {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
             if (response.equals("1")){
-                if(par[1].equals("true")) {
+                if(remember.equals("true")) {
                     //Save in local
                     CacheMethods cacheMethods = CacheMethods.getInstance(context);
                     cacheMethods.saveInPreferences("doorKey",pass);
                 }
-                Toast.makeText(context,"Door opened. Press stop listening.",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Door opened. Press back to stop listening.",Toast.LENGTH_LONG).show();
             }
             Log.i("Task", "LogIn reponse: " + response);
-            return response;
         }
     }
 }

@@ -26,7 +26,7 @@
             android:text="Enabling technologies"
             android:textColor="@color/black"
             android:layout_margin="6dp"
-            android:textSize="25sp"/>
+            android:textSize="20sp"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 app:fontName="Titillium-Regular.otf"
                 android:text="This application uses EWE ontology for channel modelling. EWE ontology models the most important aspects of TAS from a descriptive approach, that enables service disovery and semantic rule definition featuring reasoning"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <es.dit.gsi.rulesframework.util.TitilliumTextView
                 android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                 app:fontName="Titillium-Regular.otf"
                 android:text="This application uses EYE which stands for Euler Yet another proof Engine, and it is a further development of Euler which is an inference engine supporting logic based proofs. EYE is a semibackward reasoner enhanced with Euler path detection. The core of EYE accepts N3 (Notation 3) code, which is a Prolog representation resulting from parsing RDF triples and N3 rules."
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <es.dit.gsi.rulesframework.util.TitilliumTextView
                 android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                 app:fontName="Titillium-Regular.otf"
                 android:text="This application is linked with the EWETasker website. From this site, every channel information, N3 prefixes and events/actions description are defined."
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <es.dit.gsi.rulesframework.util.TitilliumTextView
                 android:layout_width="match_parent"

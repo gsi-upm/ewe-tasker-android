@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <es.dit.gsi.rulesframework.util.TitilliumTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Configure your EWETasker server ip address:"
+            android:textSize="20sp"
+            app:fontName="Titillium-Regular.otf"
+            android:id="@+id/passTv"/>
+        <es.dit.gsi.rulesframework.util.TitilliumEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fontName="Titillium-Regular.otf"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:hint="i.e. http://138.2.3.4:8080 , http://www.ewetasker-domain.com ..."
+            android:textColorHint="@color/grey"
+            android:id="@+id/ipField" />
+        </LinearLayout>
+    <es.dit.gsi.rulesframework.util.TitilliumTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fontName="Titillium-Regular.otf"
+        android:textSize="12sp"
+        android:text="(Public server: http://)"/>
+</LinearLayout>
