@@ -25,8 +25,8 @@ import es.dit.gsi.rulesframework.model.Rule;
  */
 public class Tasks {
 
-    public static String ipServer = "http://138.4.3.247:8080";
-    public static final String defaultGsiUrl = "http://138.4.3.247:8080";
+    public static String ipServer = "http://ewetasker.cluster.gsi.dit.upm.es";
+    public static final String defaultGsiUrl = "http://ewetasker.cluster.gsi.dit.upm.es";
     private static final String urlRulesApi =ipServer +  "/mobileConnectionHelper.php";
     private static final String urlInputApi =ipServer +  "/controller/eventsManager.php";
     private static final String urlGetChannelApi =ipServer +  "/mobileConnectionHelper.php";
@@ -39,6 +39,7 @@ public class Tasks {
         protected String doInBackground(Object[] par) {
             // do above Server call here
             Rule mRule = (Rule) par[0];
+            String user = (String) par[1];
 
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(urlRulesApi);
@@ -53,7 +54,7 @@ public class Tasks {
             params.add(new BasicNameValuePair("rule_event_title", mRule.getIfAction()));
             params.add(new BasicNameValuePair("rule_action_title",mRule.getDoAction()));
             params.add(new BasicNameValuePair("rule_place", mRule.getPlace()));
-            params.add(new BasicNameValuePair("rule_creator", "afll"));
+            params.add(new BasicNameValuePair("rule_creator", user));
             params.add(new BasicNameValuePair("rule", mRule.getEyeRule()));//EYE rule with prefix
             params.add(new BasicNameValuePair("command", "createRule"));
 

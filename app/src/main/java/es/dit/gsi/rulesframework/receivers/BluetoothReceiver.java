@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import es.dit.gsi.rulesframework.services.RuleExecutionModule;
+import es.dit.gsi.rulesframework.util.CacheMethods;
 
 /**
  * Created by afernandez on 26/10/15.
@@ -14,8 +15,9 @@ import es.dit.gsi.rulesframework.services.RuleExecutionModule;
 public class BluetoothReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-            String user="afll";
-            String channel="Bluetooth";
+        CacheMethods cacheMethods = CacheMethods.getInstance(context);
+        String user=cacheMethods.getFromPreferences("beaconRuleUser","public");
+        String channel="Bluetooth";
             String input = "";
 
             final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);

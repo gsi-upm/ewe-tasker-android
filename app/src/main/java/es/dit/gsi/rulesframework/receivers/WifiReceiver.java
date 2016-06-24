@@ -7,6 +7,7 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import es.dit.gsi.rulesframework.services.RuleExecutionModule;
+import es.dit.gsi.rulesframework.util.CacheMethods;
 
 /**
  * Created by afernandez on 26/10/15.
@@ -15,7 +16,8 @@ public class WifiReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String user="afll";
+        CacheMethods cacheMethods = CacheMethods.getInstance(context);
+        String user=cacheMethods.getFromPreferences("beaconRuleUser","public");
         String channel="Wifi";
         String input = "";
 

@@ -9,8 +9,8 @@ android {
         applicationId "es.dit.gsi.rulesframework"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.04042016"
+        versionCode 4
+        versionName "1.0.24062016"
     }
     buildTypes {
         release {

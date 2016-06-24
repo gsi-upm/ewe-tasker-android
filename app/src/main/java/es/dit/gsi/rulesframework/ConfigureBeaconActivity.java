@@ -27,7 +27,7 @@ public class ConfigureBeaconActivity extends ActionBarActivity {
         editTextPlace = (EditText) findViewById(R.id.editTextPlace);
         editTextUser = (EditText) findViewById(R.id.editTextUser);
 
-        editTextUser.setText(cacheMethods.getFromPreferences("beaconRuleUser","afll"));
+        editTextUser.setText(cacheMethods.getFromPreferences("beaconRuleUser","public"));
         editTextPlace.setText(cacheMethods.getFromPreferences("beaconRulePlace","GSI lab"));
 
 

@@ -12,6 +12,7 @@ import java.util.List;
 
 import es.dit.gsi.rulesframework.database.RulesSQLiteHelper;
 import es.dit.gsi.rulesframework.model.Rule;
+import es.dit.gsi.rulesframework.util.CacheMethods;
 import es.dit.gsi.rulesframework.util.Tasks;
 
 
@@ -148,7 +149,7 @@ public class RuleDefinitionModule extends Service {
 
     /*************SERVER FUNCTIONS****************/
     public void postRuleInServer() {
-        new Tasks.PostRuleToServerTask().execute(new Rule(getRuleName(), getIfChannel(),getEvento(),getDoChannel(),getAction(),getIfParameter(),getDoParameter(), getPlace(),getDescription()));
+        new Tasks.PostRuleToServerTask().execute(new Rule(getRuleName(), getIfChannel(),getEvento(),getDoChannel(),getAction(),getIfParameter(),getDoParameter(), getPlace(),getDescription()), CacheMethods.getInstance(getApplicationContext()).getFromPreferences("beaconRuleUser","public"));
     }
 
     public void deleteRuleInServer() {

@@ -32,8 +32,11 @@
         </LinearLayout>
     <es.dit.gsi.rulesframework.util.TitilliumTextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:fontName="Titillium-Regular.otf"
         android:textSize="12sp"
-        android:text="(Public server: http://)"/>
+        android:textColor="@color/grey"
+        android:id="@+id/defaultIp"
+        android:text="(Public server: http://ewetasker.cluster.gsi.dit.upm.es)"/>
 </LinearLayout>

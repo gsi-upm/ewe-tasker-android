@@ -54,7 +54,7 @@ public class BeaconActivity extends ActionBarActivity {
         ruleExecutionModule = new RuleExecutionModule(getApplicationContext());
         cacheMethods = CacheMethods.getInstance(getApplicationContext());
 
-        user = cacheMethods.getFromPreferences("beaconRuleUser", "afll");
+        user = cacheMethods.getFromPreferences("beaconRuleUser", "public");
         place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
 
         beaconManager = new BeaconManager(getApplicationContext());
@@ -152,6 +152,7 @@ public class BeaconActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
                 Log.i("Countdown", "Beacon delivery finished");
+                Log.i("BEACON",user);
                 Log.i("BEACON",inputEvent);
                 Log.i("BEACON",response);
                 //Send response to RuleExecutionModule
@@ -174,7 +175,7 @@ public class BeaconActivity extends ActionBarActivity {
             }
         });
 
-        user = cacheMethods.getFromPreferences("beaconRuleUser","afll");
+        user = cacheMethods.getFromPreferences("beaconRuleUser","public");
         place = cacheMethods.getFromPreferences("beaconRulePlace","GSI lab");
     }
 

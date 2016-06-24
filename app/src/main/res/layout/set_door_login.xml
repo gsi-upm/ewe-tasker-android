@@ -42,6 +42,8 @@
         <es.dit.gsi.rulesframework.util.TitilliumTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            app:fontName="Titillium-Regular.otf"
             android:textSize="14sp"
             android:text="Recordar contraseña"/>
     </LinearLayout>
