@@ -14,6 +14,11 @@ Open and compile the project from Android Studio or drag and drop the apk file t
 EWETaskerMobile.apk
 
 ```
+
+You can also download it from Play Store (Android devices only).
+
+<a href="https://play.google.com/store/apps/details?id=es.dit.gsi.rulesframework">https://play.google.com/store/apps/details?id=es.dit.gsi.rulesframework</a>
+
 #Enabling Technologies
 
 <img src="./app/src/main/res/drawable/ewe_logo.png" width="200"></br>
@@ -52,3 +57,29 @@ In particular, we will explain how the rule ***when I arrive work (less than 2 m
 </p>
 
 *Note: Request the GSI access password to the lab master*
+
+#License
+ Copyright Antonio Fernández Llamas
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+#References
+<a href="http://www.gsi.dit.upm.es/index.php/es/investigacion/publicaciones?view=publication&task=show&id=398">[1]</a>*"Design and implementation of a Semantic Task Automation Rule Framework for Android Devices"*
+
+<a href="http://www.gsi.dit.upm.es/index.php/es/investigacion/publicaciones?view=publication&task=show&id=396">[2]</a>*"Development of a Task Automation Platform for Beacon enabled Smart Homes"*
+
+<a href="https://github.com/gsi-upm/ewe-tasker">[3]</a>*"EWE Tasker - Server Documentation"*
+
+<a href="http://www.gsi.dit.upm.es/index.php/es/investigacion/publicaciones?view=publication&task=show&id=387">[4]</a>*"Task Automation Services: Automation for the masses"*
+
+<a href="http://n3.restdesc.org/">[5]</a>*"Semantic Web Reasoning With EYE"*
