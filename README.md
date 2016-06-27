@@ -59,7 +59,7 @@ In particular, we will explain how the rule ***when I arrive work (less than 2 m
 *Note: Request the GSI access password to the lab master*
 
 #License
- Copyright Antonio Fernández Llamas
+   Copyright 2016 Antonio Fernández Llamas, Sergio Muñoz López and Carlos A. Iglesias Fernández.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
