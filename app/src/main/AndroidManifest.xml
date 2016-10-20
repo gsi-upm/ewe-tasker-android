@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="es.dit.gsi.rulesframework" >
+    package="es.dit.gsi.rulesframework">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--Bluetooth permissions-->
+    <!-- Bluetooth permissions -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--Wifi permissions-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-
+    <!-- Wifi permissions -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!--Calendar permissions-->
+    <!-- Calendar permissions -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
-    <!--Geofences permissions-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <!-- Geofences permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -37,26 +35,29 @@
             android:name=".receivers.BluetoothReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
             </intent-filter>
         </receiver>
         <receiver
             android:name=".receivers.WifiReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".receivers.CalendarReminderReceiver">
+        <receiver android:name=".receivers.CalendarReminderReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.EVENT_REMINDER"/>
-                <data android:scheme="content"/>
+                <action android:name="android.intent.action.EVENT_REMINDER" />
+
+                <data android:scheme="content" />
             </intent-filter>
         </receiver>
-        <activity android:name=".ListRulesActivity"
-            android:label="@string/app_name"></activity>
-        <activity android:name=".ChooseAppActivity"
+
+        <activity
+            android:name=".ListRulesActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ChooseAppActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -65,15 +66,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewRuleActivity"></activity>
-        <activity android:name=".BeaconActivity"></activity>
-        <activity android:name=".InfoGSIActivity"></activity>
-        <activity android:name=".ConfigureBeaconActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".ListGeofencesActivity"/>
-        <service android:name=".services.RuleDefinitionModule" android:enabled="true"/>
-        <service android:name=".receivers.GeofenceIntentService" android:enabled="true"/>
+        <activity android:name=".NewRuleActivity" />
+        <activity android:name=".BeaconActivity" />
+        <activity android:name=".InfoGSIActivity" />
+        <activity android:name=".ConfigureBeaconActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ListGeofencesActivity" />
 
+        <service
+            android:name=".services.RuleDefinitionModule"
+            android:enabled="true" />
+        <service
+            android:name=".receivers.GeofenceIntentService"
+            android:enabled="true" />
+
+        <activity android:name=".GestorWebViewActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

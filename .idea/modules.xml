@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tfg.iml" filepath="$PROJECT_DIR$/tfg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ewe-tasker-android.iml" filepath="$PROJECT_DIR$/ewe-tasker-android.iml" />
     </modules>
   </component>
 </project>

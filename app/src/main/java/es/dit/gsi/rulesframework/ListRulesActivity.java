@@ -50,6 +50,7 @@ import es.dit.gsi.rulesframework.model.Event;
 import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.receivers.GeofenceIntentService;
+import es.dit.gsi.rulesframework.services.RuleExecutionModule;
 import es.dit.gsi.rulesframework.util.Constants;
 import es.dit.gsi.rulesframework.util.Tasks;
 
@@ -87,6 +88,9 @@ public class ListRulesActivity extends AppCompatActivity implements GoogleApiCli
 
         //ActionBar
         getSupportActionBar().setTitle("List of Rules");
+
+        RuleExecutionModule ruleExecutionModule = new RuleExecutionModule(getApplicationContext());
+        ruleExecutionModule.executeDoResponse("Gestor","","http://ww.google.es");
 
         //RecyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.listRules);

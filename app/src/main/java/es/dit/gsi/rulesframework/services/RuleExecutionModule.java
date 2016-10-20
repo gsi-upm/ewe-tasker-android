@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import es.dit.gsi.rulesframework.performers.DoorPerformer;
+import es.dit.gsi.rulesframework.performers.GestorPerformer;
 import es.dit.gsi.rulesframework.util.Constants;
 import es.dit.gsi.rulesframework.ListRulesActivity;
 import es.dit.gsi.rulesframework.model.Channel;
@@ -114,6 +115,9 @@ public class RuleExecutionModule {
                         case "OpenDoor":
                             doorPerformer.openDoor(context);
                     }
+                case "Gestor":
+                    GestorPerformer gestorPerformer = new GestorPerformer(context);
+                    gestorPerformer.show(parameter);
                 default:
             }
 
