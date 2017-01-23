@@ -114,10 +114,22 @@ public class RuleExecutionModule {
                     switch (doAction) {
                         case "OpenDoor":
                             doorPerformer.openDoor(context);
-                    }
-                case "Gestor":
-                    GestorPerformer gestorPerformer = new GestorPerformer(context);
-                    gestorPerformer.show(parameter);
+                    }break;
+
+                case "Place":
+                    switch (doAction) {
+                        case "Inside":
+                            //Sendplace -> Obtain url
+                            GestorPerformer gestorPerformer = new GestorPerformer(context);
+                            gestorPerformer.haveToShow(parameter);
+                    }break;
+
+                case "CMS":
+                    switch (doAction){
+                        case "Show":
+                            GestorPerformer gestorPerformer1 = new GestorPerformer(context);
+                            gestorPerformer1.sendPlace(parameter);
+                    }break;
                 default:
             }
 

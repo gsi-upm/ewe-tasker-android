@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class GestorWebViewActivity extends AppCompatActivity {
 
@@ -19,12 +20,13 @@ public class GestorWebViewActivity extends AppCompatActivity {
 
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient(){
+        /*webView.setWebViewClient(new WebViewClient(){
             public boolean shouldOverrideUrlLoading(WebView view,String url){
                 view.loadUrl(url);
-                return true;
+                return false;
             }
-        });
-        webView.loadUrl("http://www.google.es");
+        });*/
+        Toast.makeText(getApplicationContext(),url,Toast.LENGTH_LONG).show();
+        webView.loadUrl(url);
     }
 }

@@ -32,6 +32,7 @@ public class Tasks {
     private static final String urlGetChannelApi =ipServer +  "/mobileConnectionHelper.php";
     private static final String urlBifrost = "http://bifrost.gsi.dit.upm.es/index.php";
     public static final String urlImages = ipServer + "/img/";
+    public static final String urlCMS = "http://javtfg.barcolabs.com/cms/api.php";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
 
@@ -58,7 +59,7 @@ public class Tasks {
             params.add(new BasicNameValuePair("rule", mRule.getEyeRule()));//EYE rule with prefix
             params.add(new BasicNameValuePair("command", "createRule"));
 
-
+            Log.i("RULE","My ruleee"+ mRule.getEyeRule());
             String response = "";
             try {
                 post.setEntity(new UrlEncodedFormEntity(params));
@@ -196,6 +197,33 @@ public class Tasks {
                 Toast.makeText(context,"Door opened. Press back to stop listening.",Toast.LENGTH_LONG).show();
             }
             Log.i("Task", "LogIn reponse: " + response);
+        }
+    }
+
+    public static class GetUrlFromCMS extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... par) {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(urlCMS+"?location="+par[0]);
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            //params.add(new BasicNameValuePair("location", par[0]));
+
+            String response = "";
+            try {
+                post.setEntity(new UrlEncodedFormEntity(params));
+
+                HttpResponse resp = null;
+                resp = client.execute(post);
+
+                HttpEntity ent = resp.getEntity();
+                response = EntityUtils.toString(ent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
         }
     }
 }

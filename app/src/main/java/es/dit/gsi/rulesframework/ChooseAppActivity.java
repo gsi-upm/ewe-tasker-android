@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.estimote.sdk.SystemRequirementsChecker;
 
+import es.dit.gsi.rulesframework.services.RuleExecutionModule;
 import es.dit.gsi.rulesframework.util.CacheMethods;
 import es.dit.gsi.rulesframework.util.Tasks;
 
@@ -38,6 +39,9 @@ public class ChooseAppActivity extends ActionBarActivity {
         editButton = (Button) findViewById(R.id.editServer);
         server = (TextView) findViewById(R.id.server);
 
+        //TEST
+        RuleExecutionModule ruleExecutionModule = new RuleExecutionModule(getApplicationContext());
+        ruleExecutionModule.executeDoResponse("CMS","Show","Library");
         //Set IP SERVER
         CacheMethods cacheMethods = CacheMethods.getInstance(getApplicationContext());
         Tasks.ipServer = cacheMethods.getFromPreferences("ipServer",Tasks.defaultGsiUrl);
