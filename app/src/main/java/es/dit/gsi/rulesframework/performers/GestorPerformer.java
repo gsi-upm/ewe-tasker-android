@@ -36,7 +36,7 @@ public class GestorPerformer {
         //Wrong prefix
         String event = "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . @prefix ewe: <http://gsi.dit.upm.es/ontologies/ewe/ns/#> . @prefix ewe-place: <http://gsi.dit.upm.es/ontologies/ewe-place/ns/#> ." +
 
-                " ewe-place:Place rdf:type ewe-place:Inside. ewe-place:Place ewe:placeID \"biblioteca\".";
+                " ewe-place:Place rdf:type ewe-place:Inside. ewe-place:Place ewe:placeID \""+place+"\".";
         String user = cacheMethods.getFromPreferences("beaconRuleUser","public");
 
 
@@ -52,7 +52,6 @@ public class GestorPerformer {
         }
         Log.i("RESPONSE",event);
         Log.i("RESPONSE",user);
-        Log.i("RESPONSE","LOLOLO" + response);
 
         //Show url received from response
         RuleExecutionModule ruleExecutionModule = new RuleExecutionModule(context);

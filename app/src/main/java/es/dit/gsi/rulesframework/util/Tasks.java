@@ -25,8 +25,10 @@ import es.dit.gsi.rulesframework.model.Rule;
  */
 public class Tasks {
 
-    public static String ipServer = "http://ewetasker.cluster.gsi.dit.upm.es";
-    public static final String defaultGsiUrl = "http://ewetasker.cluster.gsi.dit.upm.es";
+    public static String ipServer = "http://javtfg.barcolabs.com";
+    //public static String ipServer = "http://ewetasker.cluster.gsi.dit.upm.es";
+    //public static final String defaultGsiUrl = "http://ewetasker.cluster.gsi.dit.upm.es";
+    public static final String defaultGsiUrl = "http://javtfg.barcolabs.com";
     private static final String urlRulesApi =ipServer +  "/mobileConnectionHelper.php";
     private static final String urlInputApi =ipServer +  "/controller/eventsManager.php";
     private static final String urlGetChannelApi =ipServer +  "/mobileConnectionHelper.php";
@@ -35,6 +37,11 @@ public class Tasks {
     public static final String urlCMS = "http://javtfg.barcolabs.com/cms/api.php";
 
     public static class PostRuleToServerTask extends AsyncTask<Object, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
 
         @Override
         protected String doInBackground(Object[] par) {
@@ -125,6 +132,7 @@ public class Tasks {
         protected String doInBackground(Void... par) {
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(urlGetChannelApi);
+            Log.i("GET",urlGetChannelApi);
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 

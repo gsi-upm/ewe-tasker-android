@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class ChooseAppActivity extends ActionBarActivity {
         //Set IP SERVER
         CacheMethods cacheMethods = CacheMethods.getInstance(getApplicationContext());
         Tasks.ipServer = cacheMethods.getFromPreferences("ipServer",Tasks.defaultGsiUrl);
+        Log.i("URL",Tasks.ipServer);
         server.setText(Tasks.ipServer);
 
         rulesFrameworkLayout.setOnClickListener(new View.OnClickListener() {

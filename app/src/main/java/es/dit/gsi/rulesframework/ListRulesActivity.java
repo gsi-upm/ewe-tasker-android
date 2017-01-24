@@ -51,6 +51,7 @@ import es.dit.gsi.rulesframework.model.NamedGeofence;
 import es.dit.gsi.rulesframework.model.Rule;
 import es.dit.gsi.rulesframework.receivers.GeofenceIntentService;
 import es.dit.gsi.rulesframework.services.RuleExecutionModule;
+import es.dit.gsi.rulesframework.util.CacheMethods;
 import es.dit.gsi.rulesframework.util.Constants;
 import es.dit.gsi.rulesframework.util.Tasks;
 
@@ -85,6 +86,10 @@ public class ListRulesActivity extends AppCompatActivity implements GoogleApiCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rules_activity);
+
+        //Set IP SERVER
+        CacheMethods cacheMethods = CacheMethods.getInstance(getApplicationContext());
+        Tasks.ipServer = cacheMethods.getFromPreferences("ipServer",Tasks.defaultGsiUrl);
 
         //ActionBar
         getSupportActionBar().setTitle("List of Rules");

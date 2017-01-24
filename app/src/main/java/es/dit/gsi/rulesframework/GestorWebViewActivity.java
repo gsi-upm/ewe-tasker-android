@@ -26,7 +26,7 @@ public class GestorWebViewActivity extends AppCompatActivity {
                 return false;
             }
         });*/
-        Toast.makeText(getApplicationContext(),url,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),url,Toast.LENGTH_LONG).show();
         webView.loadUrl(url);
     }
 }
